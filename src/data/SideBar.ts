@@ -16,17 +16,16 @@ export const SideBarData = {
   navMain: [
     {
       title: 'CDR',
-      url: '#',
       icon: SquareTerminal,
       isActive: true,
       items: [
         {
           title: 'Dashboard',
-          url: '#',
+          url: '/dashboard',
         },
         {
           title: 'Call Records',
-          url: '#',
+          url: '/records',
         },
       ],
     },

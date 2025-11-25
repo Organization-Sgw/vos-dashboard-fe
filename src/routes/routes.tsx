@@ -1,15 +1,37 @@
-import DashboardPage from '@/pages/DashboardPages'
+import SidebarPage from '@/pages/SidebarPages'
 import LoginPages from '@/pages/LoginPages'
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, redirect } from 'react-router-dom'
+import RecordListPage from '@/pages/RecordsList'
+import DashboardPage from '@/pages/Dashboard'
 
 const router = createBrowserRouter([
   {
     path: '/login',
     element: <LoginPages />,
+    handle: { breadcrumb: 'Login' },
   },
   {
     path: '/',
-    element: <DashboardPage />,
+    element: <SidebarPage />,
+    loader: () => ({ breadcrumb: 'CDR' }),
+
+    children: [
+      {
+        index: true,
+        loader: () => redirect('/dashboard'),
+      },
+
+      {
+        path: 'dashboard',
+        element: <DashboardPage />,
+        loader: () => ({ breadcrumb: 'Dashboard' }),
+      },
+      {
+        path: 'records',
+        element: <RecordListPage />,
+        loader: () => ({ breadcrumb: 'Records' }),
+      },
+    ],
   },
 ])
 
