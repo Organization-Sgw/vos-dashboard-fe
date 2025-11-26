@@ -33,7 +33,7 @@ export default function RecordListPage() {
   }
 
   return (
-    <div className="w-full p-4">
+    <div className="w-full max-w-full p-4 ">
       <h1 className="text-2xl font-bold mb-4">Call Detail Records</h1>
 
       <div className="mb-5 p-5 rounded-xl border shadow-sm bg-white">
@@ -289,15 +289,16 @@ export default function RecordListPage() {
       </div>
 
       {/* TABLE */}
-      <div className="overflow-x-auto border rounded-lg shadow">
-        <table className="min-w-full divide-y divide-gray-200 bg-white">
+      <div className="min-w-full overflow-x-auto rounded-lg border bg-white">
+        <table className="table-fixed min-w-max">
           <thead className="bg-gray-100">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    className="px-4 py-2 text-left text-sm font-semibold text-gray-800"
+                    className="px-4 py-2 text-left text-sm font-semibold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis"
+                    style={{ maxWidth: '160px' }}
                   >
                     {flexRender(header.column.columnDef.header, header.getContext())}
                   </th>
@@ -309,7 +310,7 @@ export default function RecordListPage() {
           <tbody className="divide-y divide-gray-200">
             {isPending ? (
               <tr>
-                <td colSpan={5} className="p-4 text-center">
+                <td colSpan={table.getAllColumns().length} className="p-4 text-center">
                   Loading...
                 </td>
               </tr>
@@ -317,7 +318,11 @@ export default function RecordListPage() {
               table.getRowModel().rows.map((row) => (
                 <tr key={row.id} className="hover:bg-gray-50 transition-colors">
                   {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className="px-4 py-2 text-sm text-gray-900">
+                    <td
+                      key={cell.id}
+                      className="px-4 py-2 text-sm text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis"
+                      style={{ maxWidth: '160px' }}
+                    >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
                   ))}

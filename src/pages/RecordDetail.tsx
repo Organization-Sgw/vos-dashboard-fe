@@ -1,51 +1,17 @@
-import type { ECdr } from '@/types/EcdrType'
+import { useCdrDetail } from '@/hooks/useCDR'
+import { useParams } from 'react-router-dom'
 
 export default function RecordDetail() {
-  const data: ECdr = {
-    ID: 12345,
-    Callere164: '+628111111111',
-    Calleraccesse164: '+628112222222',
-    Calleee164: '+628113333333',
-    Calleeaccesse164: '+628114444444',
-    CallerIP: '192.168.1.10',
-    Callergatewayh323id: 'GATEWAY-01',
-    Callerproductid: 'PROD-01',
-    Callertogatewaye164: '0809876543',
-    CalleeIP: '10.10.0.15',
-    Calleegatewayh323id: 'GATEWAY-02',
-    Calleeproductid: 'PROD-02',
-    Calleetogatewaye164: '0801234567',
-    Billingmode: 1,
-    Calllevel: 2,
-    Agentfeetime: 60,
-    Starttime: 1764086874000,
-    Stoptime: 1764086934000,
-    Pdd: 200,
-    Holdtime: 45,
-    Feeprefix: 'IDR',
-    Feetime: 60,
-    Fee: 300,
-    Suitefee: 120,
-    Suitefeetime: 40,
-    Incomefee: 500,
-    Customeraccount: 'CUST001',
-    Customername: 'PT Teknologi Asia',
-    Agentfeeprefix: 'A-IDR',
-    Agentfee: 200,
-    Agentsuitefee: 100,
-    Agentsuitefeetime: 50,
-    Agentaccount: 'AG001',
-    Agentname: 'Agent Example',
-    Flowno: 999,
-    Softswitchdn: 'SS-DN-01',
-    Enddirection: 1,
-    Endreason: 16,
-    Calleebilling: 1,
-    Cdrlevel: 3,
-    SubcdrID: 56789,
-  }
+  const { id } = useParams()
+  const numericId = Number(id)
+
+  const { data, loading, error } = useCdrDetail(numericId)
 
   const formatTime = (ts: number) => new Date(ts).toLocaleString('en-US', { hour12: false })
+
+  if (loading) return <div className="p-4">Loading...</div>
+  if (error) return <div className="p-4 text-red-600">Error: {error}</div>
+  if (!data) return <div className="p-4">No data found</div>
 
   return (
     <div className="w-full p-4">
@@ -118,6 +84,7 @@ export default function RecordDetail() {
   )
 }
 
+/* SECTION HEADER */
 function Section({ title }: { title: string }) {
   return (
     <tr className="bg-gray-50">
@@ -131,6 +98,7 @@ function Section({ title }: { title: string }) {
   )
 }
 
+/* ONE ROW */
 function Row({ label, value }: { label: string; value: any }) {
   return (
     <tr className="hover:bg-gray-50">

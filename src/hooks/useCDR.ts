@@ -9,6 +9,7 @@ interface UseCdrOptions {
   limit?: number
 }
 
+// Fetch All CDR
 export async function fetchCDR(date: string, page: number, limit: number) {
   const res = await axiosInstance.get('/cdr', {
     params: { date, page, limit },
@@ -41,6 +42,33 @@ export function useCdr({ date, limit = 10 }: UseCdrOptions) {
     nextPage: () => setPage((p) => p + 1),
     prevPage: () => setPage((p) => Math.max(1, p - 1)),
     setPage,
+    refresh: refetch,
+  }
+}
+
+
+// Detail Fetch
+export async function fetchCDRDetail(id: number) {
+  const res = await axiosInstance.get(`/cdr/${id}`)
+  return res.data.data as ECdr
+}
+
+export function useCdrDetail(id: number) {
+  const {
+    data,
+    isLoading: loading,
+    error,
+    refetch,
+  } = useQuery<ECdr>({
+    queryKey: ['cdr-detail', id],
+    queryFn: () => fetchCDRDetail(id),
+    staleTime: 1000 * 10,
+  })
+
+  return {
+    data,
+    loading,
+    error: error ? (error as Error).message : null,
     refresh: refetch,
   }
 }

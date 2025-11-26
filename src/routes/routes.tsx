@@ -15,7 +15,6 @@ const router = createBrowserRouter([
     path: '/',
     element: <SidebarPage />,
     loader: () => ({ breadcrumb: 'CDR' }),
-
     children: [
       {
         index: true,
@@ -27,15 +26,21 @@ const router = createBrowserRouter([
         element: <DashboardPage />,
         loader: () => ({ breadcrumb: 'Dashboard' }),
       },
+
       {
         path: 'records',
-        element: <RecordListPage />,
         loader: () => ({ breadcrumb: 'Records' }),
-      },
-      {
-        path: 'detail',
-        element: <RecordDetail />,
-        loader: () => ({ breadcrumb: 'Detail Record' }),
+        children: [
+          {
+            index: true,
+            element: <RecordListPage />,
+          },
+          {
+            path: ':id',
+            element: <RecordDetail />,
+            loader: ({ params }) => ({ breadcrumb: params.id }),
+          },
+        ],
       },
     ],
   },
