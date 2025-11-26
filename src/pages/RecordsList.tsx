@@ -36,6 +36,258 @@ export default function RecordListPage() {
     <div className="w-full p-4">
       <h1 className="text-2xl font-bold mb-4">Call Detail Records</h1>
 
+      <div className="mb-5 p-5 rounded-xl border shadow-sm bg-white">
+        <h2 className="text-lg font-semibold mb-4 text-gray-700">Filters</h2>
+
+        {/* GENERAL FILTERS */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+          {/* account_id */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Account ID</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                placeholder="Account ID"
+                className="w-full px-3 py-2 rounded-md border bg-gray-50 shadow-sm 
+                     focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              />
+              <input type="checkbox" className="h-5 w-5" />
+            </div>
+          </div>
+
+          {/* account_name */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Account Name</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                placeholder="Account Name"
+                className="w-full px-3 py-2 rounded-md border bg-gray-50 shadow-sm 
+                     focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              />
+              <input type="checkbox" className="h-5 w-5" />
+            </div>
+          </div>
+
+          {/* caller */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Caller</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                placeholder="Caller"
+                className="w-full px-3 py-2 rounded-md border bg-gray-50 shadow-sm 
+                     focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              />
+              <input type="checkbox" className="h-5 w-5" />
+            </div>
+          </div>
+
+          {/* calling_gateway */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Calling Gateway</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                placeholder="Calling Gateway"
+                className="w-full px-3 py-2 rounded-md border bg-gray-50 shadow-sm 
+                     focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              />
+              <input type="checkbox" className="h-5 w-5" />
+            </div>
+          </div>
+
+          {/* called_gateway */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Called Gateway</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                placeholder="Called Gateway"
+                className="w-full px-3 py-2 rounded-md border bg-gray-50 shadow-sm 
+                     focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              />
+              <input type="checkbox" className="h-5 w-5" />
+            </div>
+          </div>
+
+          {/* caller_ip */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Caller IP</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                placeholder="Caller IP"
+                className="w-full px-3 py-2 rounded-md border bg-gray-50 shadow-sm 
+                     focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              />
+              <input type="checkbox" className="h-5 w-5" />
+            </div>
+          </div>
+
+          {/* callee_ip */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Callee IP</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                placeholder="Callee IP"
+                className="w-full px-3 py-2 rounded-md border bg-gray-50 shadow-sm 
+                     focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              />
+              <input type="checkbox" className="h-5 w-5" />
+            </div>
+          </div>
+
+          {/* incoming_caller */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Incoming Caller</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                placeholder="Incoming Caller"
+                className="w-full px-3 py-2 rounded-md border bg-gray-50 shadow-sm 
+                     focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              />
+              <input type="checkbox" className="h-5 w-5" />
+            </div>
+          </div>
+
+          {/* incoming_callee */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Incoming Callee</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                placeholder="Incoming Callee"
+                className="w-full px-3 py-2 rounded-md border bg-gray-50 shadow-sm 
+                     focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              />
+              <input type="checkbox" className="h-5 w-5" />
+            </div>
+          </div>
+
+          {/* outbound_caller */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Outbound Caller</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                placeholder="Outbound Caller"
+                className="w-full px-3 py-2 rounded-md border bg-gray-50 shadow-sm 
+                     focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              />
+              <input type="checkbox" className="h-5 w-5" />
+            </div>
+          </div>
+
+          {/* outbound_callee */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Outbound Callee</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                placeholder="Outbound Callee"
+                className="w-full px-3 py-2 rounded-md border bg-gray-50 shadow-sm 
+                     focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+              />
+              <input type="checkbox" className="h-5 w-5" />
+            </div>
+          </div>
+
+          {/* terminate_reason */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Terminate Reason</label>
+            <select
+              className="w-full px-3 py-2 rounded-md border bg-gray-50 shadow-sm 
+                        focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+            >
+              <option value="">All</option>
+              <option value="normal">Normal</option>
+              <option value="busy">Busy</option>
+              <option value="failed">Failed</option>
+            </select>
+          </div>
+        </div>
+
+        {/* TIME FILTERS & BUTTONS CONTAINER */}
+        <div className="mt-6">
+          <div className="pb-4 border-b border-gray-200 border-t pt-3 ">
+            <h3 className="text-md font-semibold  text-gray-700 mb-3">Time Filters</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              {/* call_begin mode selector */}
+              <div className="flex items-center gap-2">
+                <input id="call_begin_mode" type="checkbox" className="h-5 w-5" />
+                <label htmlFor="call_begin_mode" className="text-sm font-medium text-gray-700">
+                  Call Begin Time
+                </label>
+              </div>
+
+              {/* call_end mode selector */}
+              <div className="flex items-center gap-2">
+                <input id="call_end_mode" type="checkbox" className="h-5 w-5" />
+                <label htmlFor="call_end_mode" className="text-sm font-medium text-gray-700">
+                  Call End Time
+                </label>
+              </div>
+
+              {/* EMPTY SPOT for alignment */}
+              <div />
+
+              {/* begin_time input */}
+              <div>
+                <label
+                  htmlFor="begin_time_input"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  Begin Time Range
+                </label>
+                <input
+                  id="begin_time_input"
+                  type="datetime-local"
+                  step="1"
+                  className="w-full px-3 py-2 rounded-md border bg-gray-50 shadow-sm
+                    text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                />
+              </div>
+
+              {/* end_time input */}
+              <div>
+                <label
+                  htmlFor="end_time_input"
+                  className="block text-sm font-medium text-gray-700 mb-1"
+                >
+                  End Time Range
+                </label>
+                <input
+                  id="end_time_input"
+                  type="datetime-local"
+                  step="1"
+                  className="w-full px-3 py-2 rounded-md border bg-gray-50 shadow-sm
+                    text-sm focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                />
+              </div>
+
+              <div />
+              <div />
+              <div />
+            </div>
+          </div>
+
+          <div className="mt-6 flex justify-end gap-3">
+            <button className="px-4 py-2 rounded-lg cursor-pointer bg-gray-200 text-gray-800 font-medium hover:bg-gray-300">
+              Reset
+            </button>
+            <button className="px-4 py-2 rounded-lg cursor-pointer bg-green-500 text-white font-medium hover:bg-green-600">
+              Export CSV
+            </button>
+            <button className="px-4 py-2  cursor-pointer rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700">
+              Apply Filter
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* TABLE */}
       <div className="overflow-x-auto border rounded-lg shadow">
         <table className="min-w-full divide-y divide-gray-200 bg-white">
