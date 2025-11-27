@@ -142,7 +142,7 @@ export default function RecordListPage() {
               // SKELETON
               [...Array(10)].map((_, i) => (
                 <tr key={i}>
-                  {table.getAllColumns().map((col, idx) => (
+                  {table.getAllColumns().map((_, idx) => (
                     <td key={idx} className="px-4 py-3">
                       <div className="h-4 animate-pulse rounded bg-gray-200"></div>
                     </td>
