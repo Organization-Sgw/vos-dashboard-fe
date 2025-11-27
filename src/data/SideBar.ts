@@ -2,7 +2,7 @@ import { GalleryVerticalEnd, SquareTerminal } from 'lucide-react'
 
 export const SideBarData = {
   user: {
-    name: 'shadcn',
+    name: 'User',
     email: 'm@example.com',
     avatar: '/avatars/shadcn.jpg',
   },

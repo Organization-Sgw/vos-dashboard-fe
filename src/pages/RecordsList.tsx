@@ -1,6 +1,7 @@
 import { DateRangePicker } from '@/components/DatePicker'
+import FilterSection from '@/components/FilterInputCdr'
 import { Spinner } from '@/components/Spinner'
-import { fetchCDR } from '@/hooks/useCDR'
+import { fetchCDR, useGenerateCSV, type CdrFilter } from '@/hooks/useCDR'
 import { cdrColumns } from '@/table/cdr-column'
 import type { ECdrResponse } from '@/types/EcdrType'
 import { formatForGoUTC } from '@/utils/Date'
@@ -8,11 +9,6 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { useState } from 'react'
 import type { DateRange } from 'react-day-picker'
-
-function isSameRange(a?: DateRange, b?: DateRange) {
-  if (!a || !b) return false
-  return a.from?.getTime() === b.from?.getTime() && a.to?.getTime() === b.to?.getTime()
-}
 
 function getDefaultDateRange(): DateRange {
   const now = new Date()
@@ -38,6 +34,9 @@ export default function RecordListPage() {
   // Date Range State
   const [date, setDate] = useState<DateRange | undefined>(defaultDate)
   const [appliedDate, setAppliedDate] = useState<DateRange | undefined>(defaultDate)
+  const [appliedFilter, setAppliedFilter] = useState<CdrFilter>({})
+
+  const [filter, setFilter] = useState<CdrFilter>({})
 
   // Filter
   const start = formatForGoUTC(appliedDate?.from)
@@ -48,8 +47,8 @@ export default function RecordListPage() {
   const limit = '30'
 
   const { data, isFetching, isLoading } = useQuery<ECdrResponse>({
-    queryKey: ['cdr', start, end, page, limit],
-    queryFn: () => fetchCDR(start, end, page, limit),
+    queryKey: ['cdr', start, end, page, limit, appliedFilter],
+    queryFn: () => fetchCDR(start, end, page, limit, appliedFilter),
     // enabled: Boolean(start && end),
     placeholderData: keepPreviousData,
   })
@@ -62,6 +61,20 @@ export default function RecordListPage() {
     getCoreRowModel: getCoreRowModel(),
   })
 
+  // Generate CSV
+  const csvQuery = useGenerateCSV({ start, end, page, limit, filter: appliedFilter })
+
+  const handleDownload = async () => {
+    const blob = await csvQuery.refetch()
+
+    const url = window.URL.createObjectURL(blob.data)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = 'cdr_export.csv'
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
   return (
     <div className="w-full max-w-full p-4">
       <h1 className="text-2xl font-bold mb-4">Call Detail Records</h1>
@@ -69,6 +82,7 @@ export default function RecordListPage() {
       {/* FILTER CARD */}
       <div className="mb-5 p-5 rounded-xl border shadow-sm bg-white">
         <h2 className="text-lg font-semibold mb-4 text-gray-700">Filters</h2>
+        <FilterSection filter={filter} setFilter={setFilter} />
 
         {/* TIME FILTERS */}
         <div className="pb-4 border-b border-t border-gray-200 pt-3">
@@ -81,17 +95,22 @@ export default function RecordListPage() {
           {/* <button className="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 font-medium hover:bg-gray-300">
             Reset
           </button> */}
-          {/* 
-          <button className="px-4 cursor-pointer py-2 rounded-lg bg-green-500 text-white font-medium hover:bg-green-600">
-            Export CSV
-          </button> */}
+
+          <button
+            onClick={handleDownload}
+            disabled={csvQuery.isFetching}
+            className="px-4 py-2 rounded-lg cursor-pointer bg-green-600 text-white"
+          >
+            {csvQuery.isFetching ? 'Downloading...' : 'Export CSV'}
+          </button>
 
           <button
             onClick={() => {
               setAppliedDate(date)
+              setAppliedFilter(filter)
               setPage('1')
             }}
-            disabled={isFetching || isSameRange(date, appliedDate)}
+            disabled={isFetching}
             className="flex items-center cursor-pointer justify-center gap-2 px-4 py-2 rounded-lg font-medium text-white
              bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed"
           >
