@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { createColumnHelper } from '@tanstack/react-table'
 import type { ECdr } from '@/types/EcdrType'
+import { toUTC7String } from '@/utils/Date'
 
 const columnHelper = createColumnHelper<ECdr>()
 
@@ -16,6 +17,16 @@ export const cdrColumns = [
       )
     },
   }),
+  columnHelper.accessor('Starttime', {
+    header: 'Start Time',
+    cell: ({ row }) => toUTC7String(row.original.Starttime),
+  }),
+
+  columnHelper.accessor('Stoptime', {
+    header: 'Stop Time',
+    cell: ({ row }) => toUTC7String(row.original.Stoptime),
+  }),
+
   columnHelper.accessor('Customeraccount', {
     header: 'Account ID',
   }),

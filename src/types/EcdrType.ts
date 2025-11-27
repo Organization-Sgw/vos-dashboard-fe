@@ -1,3 +1,10 @@
+export interface ECdrResponse {
+  data: ECdr[]
+  limit: number
+  page: number
+  total: number
+  total_pages: number
+}
 export interface ECdr {
   ID: number
   Callere164: string

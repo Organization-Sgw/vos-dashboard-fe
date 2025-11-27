@@ -1,51 +1,49 @@
-import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import type { ECdr } from '@/types/EcdrType'
+import type { ECdr, ECdrResponse } from '@/types/EcdrType'
 import { axiosInstance } from '@/api/axios'
 import { keepPreviousData } from '@tanstack/react-query'
 
 interface UseCdrOptions {
-  date: string
-  limit?: number
+  start: string
+  end: string
+  page: string
+  limit: string
 }
 
-// Fetch All CDR
-export async function fetchCDR(date: string, page: number, limit: number) {
+export async function fetchCDR(start: string, end: string, page: string, limit: string) {
   const res = await axiosInstance.get('/cdr', {
-    params: { date, page, limit },
+    params: { start, end, page, limit },
   })
 
-  return res.data.data as ECdr[]
+  return res.data as ECdrResponse
 }
 
-export function useCdr({ date, limit = 10 }: UseCdrOptions) {
-  const [page, setPage] = useState(1)
-
+export function useCdr({ start, end, page, limit }: UseCdrOptions) {
   const {
-    data = [],
+    data,
     isLoading: loading,
     error,
+    isFetching,
     refetch,
-  } = useQuery({
-    queryKey: ['cdr', date, page, limit],
-    queryFn: () => fetchCDR(date, page, limit),
+  } = useQuery<ECdrResponse>({
+    queryKey: ['cdr', start, end, page, limit], // <<< penting: fetch ulang saat param berubah
+    queryFn: () => fetchCDR(start, end, page, limit),
     placeholderData: keepPreviousData,
     staleTime: 1000 * 10,
   })
 
   return {
-    data,
+    data: data?.data ?? [], // list data cdr
+    limit: data?.limit ?? 0,
+    page: data?.page ?? 1,
+    total: data?.total ?? 0,
+    totalPages: data?.total_pages ?? 0,
+    isFetching,
     loading,
     error: error ? (error as Error).message : null,
-    page,
-    limit,
-    nextPage: () => setPage((p) => p + 1),
-    prevPage: () => setPage((p) => Math.max(1, p - 1)),
-    setPage,
     refresh: refetch,
   }
 }
-
 
 // Detail Fetch
 export async function fetchCDRDetail(id: number) {
