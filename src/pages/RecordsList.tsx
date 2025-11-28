@@ -97,7 +97,7 @@ export default function RecordListPage() {
             <div
               className={`
           overflow-y-auto transition-all duration-300
-          ${open ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}
+          ${open ? 'max-h-[550px] opacity-100' : 'max-h-0 opacity-0'}
         `}
             >
               <FilterSection filter={filter} setFilter={setFilter} />
