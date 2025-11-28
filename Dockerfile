@@ -5,9 +5,9 @@ FROM node:18-alpine AS build
 WORKDIR /app
 
 # Copy package file & install dependency 
-COPY package*.json ./
-# Kalau pakai pnpm/yarn,
-RUN yarn install
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
+
 
 # Copy semua source code
 COPY . .
