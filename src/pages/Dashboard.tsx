@@ -23,7 +23,6 @@ export default function DashboardPage() {
             />
           </CollapsibleTrigger>
 
-          {/* SMOOTH CONTENT TANPA KEYFRAMES */}
           <CollapsibleContent
             className={`
               overflow-hidden transition-all duration-300
