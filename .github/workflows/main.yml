@@ -1,0 +1,80 @@
+name: Deploy Vos Frontend
+
+on:
+  push:
+    branches: ['dev']
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          printf "%s\n" "${{ secrets.DEV_PRIVKEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -p 6622 -H ${{ secrets.DEV_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to Remote Server
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ secrets.DEV_HOST }}
+          username: ${{ secrets.DEV_USER }}
+          key: ${{ secrets.DEV_PRIVKEY }}
+          port: ${{ secrets.DEV_PORT }}
+          script: |
+            echo "Navigating to fe directory..."
+            cd vos-fe || { echo 'Directory not found'; exit 1; }
+
+            echo "Checking connectivity to GitHub..."
+            if ping -c 1 -W 5 github.com >/dev/null 2>&1; then
+              echo "GitHub reachable, continuing deployment..."
+            else
+              echo "GitHub not reachable within 5 seconds, canceling deploy."
+              exit 1
+            fi
+
+            echo "Checking connectivity to Docker Hub..."
+            if ping -c 1 -W 5 docker.com >/dev/null 2>&1; then
+              echo "Docker Hub reachable, continuing..."
+            else
+              echo "Docker Hub not reachable within 5 seconds, canceling deploy."
+              exit 1
+            fi
+
+            cd vos-dashboard-fe/
+
+            echo "Pulling latest code..."
+            git pull origin dev || { echo 'Git pull failed'; exit 1; }
+
+            echo "Stopping old service..."
+            docker compose down || true
+
+            echo "Saving old image as backup (if exists)..."
+            docker image inspect vos-fe:latest >/dev/null 2>&1 && docker tag vos-fe:latest vos-fe:backup || true
+
+            echo "Removing old image..."
+            docker image rm vos-fe:latest || true
+            docker image prune -f || true
+
+            echo "Building new image with Docker Compose..."
+            if docker compose build; then
+              echo "Build success! Removing backup..."
+              docker image rm vos-fe:backup || true
+            else
+              echo "Build failed! Attempting to restore backup..."
+              if docker image inspect vos-fe:backup >/dev/null 2>&1; then
+                echo "Restoring backup image..."
+                docker tag vos-fe:backup vos-fe:latest
+                docker image rm vos-fe:backup || true
+              else
+                echo "No backup available! Deployment aborted."
+                exit 1
+              fi
+            fi
+
+            echo "Starting service..."
+            docker compose up -d || { echo 'Failed to start service'; exit 1; }
+
+            echo "Deploy Success!"
