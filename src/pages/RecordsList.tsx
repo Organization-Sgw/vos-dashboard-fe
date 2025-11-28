@@ -93,50 +93,52 @@ export default function RecordListPage() {
               }`}
             />
           </CollapsibleTrigger>
-          <CollapsibleContent
-            className={`
-              overflow-hidden transition-all duration-300
-              ${open ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0'}
-            `}
-          >
-            <FilterSection filter={filter} setFilter={setFilter} />
+          <CollapsibleContent className="transition-all duration-300">
+            <div
+              className={`
+          overflow-y-auto transition-all duration-300
+          ${open ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}
+        `}
+            >
+              <FilterSection filter={filter} setFilter={setFilter} />
 
-            {/* TIME FILTERS */}
-            <div className="pb-4 border-b border-t border-gray-200 pt-3">
-              <h3 className="text-md font-semibold text-gray-700 mb-3">Time Filters</h3>
-              <DateRangePicker date={date} setDate={setDate} />
-            </div>
+              {/* TIME FILTERS */}
+              <div className="pb-4 border-b border-t border-gray-200 pt-3">
+                <h3 className="text-md font-semibold text-gray-700 mb-3">Time Filters</h3>
+                <DateRangePicker date={date} setDate={setDate} />
+              </div>
 
-            {/* BUTTONS */}
-            <div className="mt-6 flex justify-end gap-3">
-              {/* <button className="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 font-medium hover:bg-gray-300">
+              {/* BUTTONS */}
+              <div className="mt-6 flex justify-end gap-3">
+                {/* <button className="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 font-medium hover:bg-gray-300">
             Reset
           </button> */}
 
-              <button
-                onClick={handleDownload}
-                disabled={csvQuery.isFetching}
-                className="px-4 py-2 rounded-lg cursor-pointer bg-green-600 text-white"
-              >
-                {csvQuery.isFetching ? 'Downloading...' : 'Export CSV'}
-              </button>
+                <button
+                  onClick={handleDownload}
+                  disabled={csvQuery.isFetching}
+                  className="px-4 py-2 rounded-lg cursor-pointer bg-green-600 text-white"
+                >
+                  {csvQuery.isFetching ? 'Downloading...' : 'Export CSV'}
+                </button>
 
-              <button
-                onClick={() => {
-                  setAppliedDate(date)
-                  setAppliedFilter(filter)
-                  setPage('1')
-                }}
-                disabled={isFetching}
-                className="flex items-center cursor-pointer justify-center gap-2 px-4 py-2 rounded-lg font-medium text-white
+                <button
+                  onClick={() => {
+                    setAppliedDate(date)
+                    setAppliedFilter(filter)
+                    setPage('1')
+                  }}
+                  disabled={isFetching}
+                  className="flex items-center cursor-pointer justify-center gap-2 px-4 py-2 rounded-lg font-medium text-white
              bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed"
-              >
-                {isFetching ? (
-                  <Spinner size={18} border={3} color="border-white" />
-                ) : (
-                  'Apply Filter'
-                )}
-              </button>
+                >
+                  {isFetching ? (
+                    <Spinner size={18} border={3} color="border-white" />
+                  ) : (
+                    'Apply Filter'
+                  )}
+                </button>
+              </div>
             </div>
           </CollapsibleContent>
         </div>
