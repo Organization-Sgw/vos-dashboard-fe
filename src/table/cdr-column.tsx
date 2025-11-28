@@ -73,6 +73,9 @@ export const cdrColumns = [
   columnHelper.accessor('Endreason', {
     header: 'Terminate Reason',
   }),
+  columnHelper.accessor('Holdtime', {
+    header: 'Holdtime',
+  }),
 
   // columnHelper.accessor('Starttime', {
   //   header: 'Start Time',

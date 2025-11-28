@@ -1,3 +1,4 @@
+import ASRCard from '@/components/AsrData'
 import { DateRangePicker } from '@/components/DatePicker'
 import FilterSection from '@/components/FilterInputCdr'
 import { Spinner } from '@/components/Spinner'
@@ -81,7 +82,10 @@ export default function RecordListPage() {
 
       {/* FILTER CARD */}
       <div className="mb-5 p-5 rounded-xl border shadow-sm bg-white">
-        <h2 className="text-lg font-semibold mb-4 text-gray-700">Filters</h2>
+        <div className='flex flex-row justify-between'>
+          <h2 className="text-lg font-semibold mb-4 text-gray-700">Filters</h2>
+          {/* <ASRCard asr={data?.asr} /> */}
+        </div>
         <FilterSection filter={filter} setFilter={setFilter} />
 
         {/* TIME FILTERS */}

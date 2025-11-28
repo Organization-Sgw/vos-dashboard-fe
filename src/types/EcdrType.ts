@@ -4,6 +4,7 @@ export interface ECdrResponse {
   page: number
   total: number
   total_pages: number
+  asr: number
 }
 export interface ECdr {
   ID: number
