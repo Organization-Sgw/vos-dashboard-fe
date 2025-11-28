@@ -1,12 +1,14 @@
 import { DateRangePicker } from '@/components/DatePicker'
 import FilterSection from '@/components/FilterInputCdr'
 import { Spinner } from '@/components/Spinner'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { fetchCDR, useGenerateCSV, type CdrFilter } from '@/hooks/useCDR'
 import { cdrColumns } from '@/table/cdr-column'
 import type { ECdrResponse } from '@/types/EcdrType'
 import { formatForGoUTC } from '@/utils/Date'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
+import { ChevronDown } from 'lucide-react'
 import { useState } from 'react'
 import type { DateRange } from 'react-day-picker'
 
@@ -30,6 +32,7 @@ function getDefaultDateRange(): DateRange {
 
 export default function RecordListPage() {
   const defaultDate = getDefaultDateRange()
+  const [open, setOpen] = useState(false)
 
   // Date Range State
   const [date, setDate] = useState<DateRange | undefined>(defaultDate)
@@ -78,49 +81,66 @@ export default function RecordListPage() {
   return (
     <div className="w-full max-w-full p-4">
       <h1 className="text-2xl font-bold mb-4">Call Detail Records</h1>
-
       {/* FILTER CARD */}
-      <div className="mb-5 p-5 rounded-xl border shadow-sm bg-white">
-        <div className='flex flex-row justify-between'>
-          <h2 className="text-lg font-semibold mb-4 text-gray-700">Filters</h2>
-          {/* <ASRCard asr={data?.asr} /> */}
-        </div>
-        <FilterSection filter={filter} setFilter={setFilter} />
+      <Collapsible open={open} onOpenChange={setOpen}>
+        <div className="mb-5 p-5 rounded-xl border shadow-sm bg-white">
+          <CollapsibleTrigger className="w-full flex items-center justify-between cursor-pointer select-none">
+            <h2 className="text-lg font-semibold mb-4 text-gray-700">Filters Data</h2>
+            {/* <ASRCard asr={data?.asr} /> */}
+            <ChevronDown
+              className={`h-5 w-5 text-gray-600 curosr-pointer hover: transition-transform duration-300 ${
+                open ? 'rotate-180' : 'rotate-0'
+              }`}
+            />
+          </CollapsibleTrigger>
+          <CollapsibleContent
+            className={`
+              overflow-hidden transition-all duration-300
+              ${open ? 'max-h-[800px] opacity-100' : 'max-h-0 opacity-0'}
+            `}
+          >
+            <FilterSection filter={filter} setFilter={setFilter} />
 
-        {/* TIME FILTERS */}
-        <div className="pb-4 border-b border-t border-gray-200 pt-3">
-          <h3 className="text-md font-semibold text-gray-700 mb-3">Time Filters</h3>
-          <DateRangePicker date={date} setDate={setDate} />
-        </div>
+            {/* TIME FILTERS */}
+            <div className="pb-4 border-b border-t border-gray-200 pt-3">
+              <h3 className="text-md font-semibold text-gray-700 mb-3">Time Filters</h3>
+              <DateRangePicker date={date} setDate={setDate} />
+            </div>
 
-        {/* BUTTONS */}
-        <div className="mt-6 flex justify-end gap-3">
-          {/* <button className="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 font-medium hover:bg-gray-300">
+            {/* BUTTONS */}
+            <div className="mt-6 flex justify-end gap-3">
+              {/* <button className="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 font-medium hover:bg-gray-300">
             Reset
           </button> */}
 
-          <button
-            onClick={handleDownload}
-            disabled={csvQuery.isFetching}
-            className="px-4 py-2 rounded-lg cursor-pointer bg-green-600 text-white"
-          >
-            {csvQuery.isFetching ? 'Downloading...' : 'Export CSV'}
-          </button>
+              <button
+                onClick={handleDownload}
+                disabled={csvQuery.isFetching}
+                className="px-4 py-2 rounded-lg cursor-pointer bg-green-600 text-white"
+              >
+                {csvQuery.isFetching ? 'Downloading...' : 'Export CSV'}
+              </button>
 
-          <button
-            onClick={() => {
-              setAppliedDate(date)
-              setAppliedFilter(filter)
-              setPage('1')
-            }}
-            disabled={isFetching}
-            className="flex items-center cursor-pointer justify-center gap-2 px-4 py-2 rounded-lg font-medium text-white
+              <button
+                onClick={() => {
+                  setAppliedDate(date)
+                  setAppliedFilter(filter)
+                  setPage('1')
+                }}
+                disabled={isFetching}
+                className="flex items-center cursor-pointer justify-center gap-2 px-4 py-2 rounded-lg font-medium text-white
              bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed"
-          >
-            {isFetching ? <Spinner size={18} border={3} color="border-white" /> : 'Apply Filter'}
-          </button>
+              >
+                {isFetching ? (
+                  <Spinner size={18} border={3} color="border-white" />
+                ) : (
+                  'Apply Filter'
+                )}
+              </button>
+            </div>
+          </CollapsibleContent>
         </div>
-      </div>
+      </Collapsible>
 
       <div className="min-h-[500px] min-w-full overflow-x-auto rounded-lg border bg-white">
         <table className="table-fixed min-w-max">
