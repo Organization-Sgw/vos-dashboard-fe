@@ -59,4 +59,9 @@ export const cdrFilterConfig = [
     placeholder: 'Outbound Callee',
     field: 'outbound_callee',
   },
+  {
+    label: 'Holdtime',
+    placeholder: 'Holdtime',
+    field: 'holdtime',
+  },
 ]

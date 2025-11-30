@@ -37,3 +37,40 @@ export interface ECdr {
   BeginTime: string
   EndTime: string
 }
+
+export interface UseCdrOptions {
+  start: string
+  end: string
+  page: string
+  limit: string
+  filter?: CdrFilter
+}
+
+export interface UseGenerateCSVOptions {
+  start: string
+  end: string
+
+  filter?: CdrFilter
+}
+
+export interface CdrFilter {
+  account_id?: string
+  account_name?: string
+
+  callere?: string
+  calleee?: string
+
+  callerip?: string
+  calleeip?: string
+
+  calling_gateway?: string
+  called_gateway?: string
+
+  incoming_caller?: string
+  incoming_callee?: string
+
+  outbound_caller?: string
+  outbound_callee?: string
+
+  holdtime?: string
+}

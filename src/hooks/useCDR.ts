@@ -1,52 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { axiosInstance } from '@/api/axios'
 import { keepPreviousData } from '@tanstack/react-query'
-
-interface UseCdrOptions {
-  start: string
-  end: string
-  page: string
-  limit: string
-  filter?: CdrFilter
-}
-
-const trimObject = (obj: Record<string, any>) => {
-  const newObj: Record<string, any> = {}
-
-  for (const key in obj) {
-    const val = obj[key]
-
-    if (typeof val === 'string') {
-      newObj[key] = val.trim()
-    } else {
-      newObj[key] = val
-    }
-  }
-
-  return newObj
-}
-
-export interface CdrFilter {
-  account_id?: string
-  account_name?: string
-
-  callere?: string
-  calleee?: string
-
-  callerip?: string
-  calleeip?: string
-
-  calling_gateway?: string
-  called_gateway?: string
-
-  incoming_caller?: string
-  incoming_callee?: string
-
-  outbound_caller?: string
-  outbound_callee?: string
-
-  holdtime?: string
-}
+import type { CdrFilter, UseCdrOptions } from '@/types/EcdrType'
+import { TrimObject } from '@/utils/request'
 
 export async function fetchCDR(
   start: string,
@@ -55,7 +11,7 @@ export async function fetchCDR(
   limit: string,
   filter: CdrFilter = {}
 ) {
-  const cleanedFilters = trimObject(filter)
+  const cleanedFilters = TrimObject(filter)
 
   const res = await axiosInstance.get('/cdr', {
     params: { start, end, page, limit, ...cleanedFilters },
