@@ -1,47 +1,30 @@
 import { DateRangePicker } from '@/components/DatePicker'
 import FilterSection from '@/components/FilterInputCdr'
 import { Spinner } from '@/components/Spinner'
+import { Button } from '@/components/ui/button'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
-import { fetchCDR, useGenerateCSV, type CdrFilter } from '@/hooks/useCDR'
+import { fetchCDR, type CdrFilter } from '@/hooks/useCDR'
 import { cdrColumns } from '@/table/cdr-column'
 import type { ECdrResponse } from '@/types/EcdrType'
-import { formatForGoUTC } from '@/utils/Date'
+import { defaultDate, formatForGoUTC } from '@/utils/Date'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { ChevronDown } from 'lucide-react'
 import { useState } from 'react'
-import type { DateRange } from 'react-day-picker'
-
-function getDefaultDateRange(): DateRange {
-  const now = new Date()
-
-  const oneHourBefore = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate(),
-    now.getHours() - 1,
-    now.getMinutes(),
-    now.getSeconds()
-  )
-
-  return {
-    from: oneHourBefore,
-    to: now,
-  }
-}
+import { type DateRange } from 'react-day-picker'
 
 export default function RecordListPage() {
-  const defaultDate = getDefaultDateRange()
   const [open, setOpen] = useState(false)
 
   // Date Range State
   const [date, setDate] = useState<DateRange | undefined>(defaultDate)
   const [appliedDate, setAppliedDate] = useState<DateRange | undefined>(defaultDate)
+  // Applied Filter
   const [appliedFilter, setAppliedFilter] = useState<CdrFilter>({})
 
   const [filter, setFilter] = useState<CdrFilter>({})
 
-  // Filter
+  // Filter Date
   const start = formatForGoUTC(appliedDate?.from)
   const end = formatForGoUTC(appliedDate?.to)
 
@@ -59,23 +42,23 @@ export default function RecordListPage() {
   const loadingTable = isLoading || isFetching
 
   const table = useReactTable({
-    data: data?.data ?? [],
+    data: data?.result.data || [],
     columns: cdrColumns,
     getCoreRowModel: getCoreRowModel(),
   })
 
-  // Generate CSV
-  const csvQuery = useGenerateCSV({ start, end, page, limit, filter: appliedFilter })
+  const handleReset = () => {
+    setDate(defaultDate)
+    setAppliedDate(defaultDate)
+    setFilter({})
+    setAppliedFilter({})
+    setPage('1')
+  }
 
-  const handleDownload = async () => {
-    const blob = await csvQuery.refetch()
-
-    const url = window.URL.createObjectURL(blob.data)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = 'cdr_export.csv'
-    a.click()
-    URL.revokeObjectURL(url)
+  const handleApplyFilter = () => {
+    setAppliedDate(date)
+    setAppliedFilter(filter)
+    setPage('1')
   }
 
   return (
@@ -110,24 +93,24 @@ export default function RecordListPage() {
 
               {/* BUTTONS */}
               <div className="mt-6 flex justify-end gap-3">
-                {/* <button className="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 font-medium hover:bg-gray-300">
-            Reset
-          </button> */}
-
-                <button
+                {/* <button
                   onClick={handleDownload}
                   disabled={csvQuery.isFetching}
                   className="px-4 py-2 rounded-lg cursor-pointer bg-green-600 text-white"
                 >
                   {csvQuery.isFetching ? 'Downloading...' : 'Export CSV'}
-                </button>
+                </button> */}
 
-                <button
-                  onClick={() => {
-                    setAppliedDate(date)
-                    setAppliedFilter(filter)
-                    setPage('1')
-                  }}
+                <Button
+                  className="cursor-pointer px-4 py-2 rounded-lg"
+                  onClick={handleReset}
+                  variant="secondary"
+                >
+                  Reset
+                </Button>
+
+                <Button
+                  onClick={handleApplyFilter}
                   disabled={isFetching}
                   className="flex items-center cursor-pointer justify-center gap-2 px-4 py-2 rounded-lg font-medium text-white
              bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 disabled:cursor-not-allowed"
@@ -137,7 +120,7 @@ export default function RecordListPage() {
                   ) : (
                     'Apply Filter'
                   )}
-                </button>
+                </Button>
               </div>
             </div>
           </CollapsibleContent>
@@ -219,16 +202,16 @@ export default function RecordListPage() {
           </button>
 
           <div className="px-5 py-2 rounded-lg border bg-gray-50 text-gray-800 font-medium shadow-sm">
-            Page {page} of {data?.total_pages ?? 1}
+            Page {page} of {data?.result.total_pages ?? 1}
           </div>
 
           <button
             onClick={() => {
               const current = Number(page)
-              const total = data?.total_pages ?? current
+              const total = data?.result.total_pages ?? current
               if (current < total) setPage(String(current + 1))
             }}
-            disabled={Number(page) >= (data?.total_pages ?? 1)}
+            disabled={Number(page) >= (data?.result.total_pages ?? 1)}
             className="h-10 w-10 cursor-pointer flex items-center justify-center rounded-lg border bg-white hover:bg-gray-50 disabled:opacity-40 shadow-sm"
           >
             ▶

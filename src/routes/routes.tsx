@@ -3,7 +3,6 @@ import LoginPages from '@/pages/LoginPages'
 import { createBrowserRouter, redirect } from 'react-router-dom'
 import RecordListPage from '@/pages/RecordsList'
 import DashboardPage from '@/pages/Dashboard'
-import RecordDetail from '@/pages/RecordDetail'
 import InteruptAnalysisPages from '@/pages/InteruptAnalysis'
 
 const router = createBrowserRouter([
@@ -34,11 +33,6 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <RecordListPage />,
-          },
-          {
-            path: ':id',
-            element: <RecordDetail />,
-            loader: ({ params }) => ({ breadcrumb: params.id }),
           },
         ],
       },
