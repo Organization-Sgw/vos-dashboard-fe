@@ -29,7 +29,7 @@ export function ThemeToggle() {
       "
     >
       {isDark ? (
-        <Sun className="h-4 w-4 text-yellow-400" />
+        <Sun className="h-4 w-4 text-neutral-200" />
       ) : (
         <Moon className="h-4 w-4 text-neutral-700" />
       )}
