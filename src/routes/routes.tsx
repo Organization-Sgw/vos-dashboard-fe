@@ -4,16 +4,21 @@ import { createBrowserRouter, redirect } from 'react-router-dom'
 import RecordListPage from '@/pages/RecordsList'
 import DashboardPage from '@/pages/Dashboard'
 import InteruptAnalysisPages from '@/pages/InteruptAnalysis'
+import ErrorBoundary from '@/components/ErrorBoundary'
 
 const router = createBrowserRouter([
   {
     path: '/login',
     element: <LoginPages />,
+    errorElement: <ErrorBoundary />,
+
     handle: { breadcrumb: 'Login' },
   },
   {
     path: '/',
     element: <SidebarPage />,
+    errorElement: <ErrorBoundary />,
+
     loader: () => ({ breadcrumb: 'CDR' }),
     children: [
       {

@@ -18,6 +18,14 @@ interface PropsRangeDate {
   setDate: (value: DateRange | undefined) => void
 }
 
+const blockDeleteInTimeInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const blockedKeys = ['Backspace', 'Delete']
+
+  if (blockedKeys.includes(e.key)) {
+    e.preventDefault()
+  }
+}
+
 export function DateRangePicker({ date, setDate }: PropsRangeDate) {
   // Handle perubahan waktu (from / to)
   const handleTimeChange = (type: 'from' | 'to', time: string) => {
@@ -77,6 +85,7 @@ export function DateRangePicker({ date, setDate }: PropsRangeDate) {
                 <input
                   type="time"
                   step={1}
+                  onKeyDown={blockDeleteInTimeInput}
                   className="border rounded-md px-2 py-1"
                   value={formatUTC7(date.from, 'HH:mm:ss')}
                   onChange={(e) => handleTimeChange('from', e.target.value)}
@@ -90,6 +99,7 @@ export function DateRangePicker({ date, setDate }: PropsRangeDate) {
                   <input
                     type="time"
                     step={1}
+                    onKeyDown={blockDeleteInTimeInput}
                     className="border rounded-md px-2 py-1"
                     value={formatUTC7(date.to, 'HH:mm:ss')}
                     onChange={(e) => handleTimeChange('to', e.target.value)}
