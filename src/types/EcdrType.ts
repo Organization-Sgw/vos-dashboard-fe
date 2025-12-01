@@ -53,6 +53,13 @@ export interface UseGenerateCSVOptions {
   filter?: CdrFilter
 }
 
+export interface UseInteruptOptions {
+  start: string
+  end: string
+
+  filter?: CdrFilter
+}
+
 export interface CdrFilter {
   account_id?: string
   account_name?: string
@@ -72,5 +79,11 @@ export interface CdrFilter {
   outbound_caller?: string
   outbound_callee?: string
 
+  holdtime?: string
+}
+
+export interface CdrFilterInterupt {
+  callerip?: string
+  calling_gateway?: string
   holdtime?: string
 }

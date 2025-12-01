@@ -65,3 +65,21 @@ export const cdrFilterConfig = [
     field: 'holdtime',
   },
 ]
+
+export const cdrFilterInteruptConfig = [
+  {
+    label: 'Calling Gateway',
+    placeholder: 'Calling Gateway',
+    field: 'calling_gateway',
+  },
+  {
+    label: 'Caller IP',
+    placeholder: 'Caller IP',
+    field: 'callerip',
+  },
+  {
+    label: 'Holdtime',
+    placeholder: 'Holdtime',
+    field: 'holdtime',
+  },
+]

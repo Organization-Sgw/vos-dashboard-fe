@@ -34,14 +34,14 @@ export function DateRangePicker({ date, setDate }: PropsRangeDate) {
   }
 
   return (
-    <div className="grid gap-2">
+    <div className="grid gap-2 ">
       <Popover>
         <PopoverTrigger asChild>
           <Button
             id="date"
             variant="outline"
             className={cn(
-              'w-[490px] justify-start text-left font-normal',
+              'w-[490px] justify-start text-left font-normal  cursor-pointer',
               !date && 'text-muted-foreground'
             )}
           >
@@ -58,7 +58,7 @@ export function DateRangePicker({ date, setDate }: PropsRangeDate) {
           </Button>
         </PopoverTrigger>
 
-        <PopoverContent className="w-auto p-3 space-y-4" align="start">
+        <PopoverContent className="w-auto p-3 space-y-4 " align="start">
           {/* Calendar */}
           <Calendar
             mode="range"
