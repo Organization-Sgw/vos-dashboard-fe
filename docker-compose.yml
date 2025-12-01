@@ -1,0 +1,10 @@
+services:
+  frontend:
+    image: vos-fe:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vos-fe
+    ports:
+      - "3000:80"    
+    restart: unless-stopped

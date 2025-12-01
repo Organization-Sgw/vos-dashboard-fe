@@ -1,50 +1,105 @@
 export interface ECdrResponse {
-  data: ECdr[]
-  limit: number
-  page: number
-  total: number
-  total_pages: number
+  status: string
+  message: string
+  result: {
+    page: number
+    limit: number
+    total_data: number
+    total_pages: number
+    data: ECdr[]
+  }
 }
+
 export interface ECdr {
-  ID: number
-  Callere164: string
-  Calleraccesse164: string
-  Calleee164: string
-  Calleeaccesse164: string
+  AccountID: string
+  AccountName: string
+
+  Caller: string
+  Callee: string
+
   CallerIP: string
-  Callergatewayh323id: string
-  Callerproductid: string
-  Callertogatewaye164: string
   CalleeIP: string
-  Calleegatewayh323id: string
-  Calleeproductid: string
-  Calleetogatewaye164: string
-  Billingmode: number
-  Calllevel: number
-  Agentfeetime: number
-  Starttime: number
-  Stoptime: number
-  Pdd: number
-  Holdtime: number
-  Feeprefix: string
-  Feetime: number
-  Fee: number
-  Suitefee: number
-  Suitefeetime: number
-  Incomefee: number
-  Customeraccount: string
-  Customername: string
-  Agentfeeprefix: string
-  Agentfee: number
-  Agentsuitefee: number
-  Agentsuitefeetime: number
-  Agentaccount: string
-  Agentname: string
-  Flowno: number
-  Softswitchdn: string
-  Enddirection: number
-  Endreason: number
-  Calleebilling: number
-  Cdrlevel: number
-  SubcdrID: number
+
+  CallingGateway: string
+  CalledGateway: string
+
+  IncomingCaller: string
+  IncomingCallee: string
+
+  OutboundCaller: string
+  OutboundCallee: string
+
+  ConversationTime: number
+
+  EndReason: number
+  EndReasonText: string
+
+  BeginTime: string
+  EndTime: string
+}
+
+export interface UseCdrOptions {
+  start: string
+  end: string
+  page: string
+  limit: string
+  filter?: CdrFilter
+}
+
+export interface UseGenerateCSVOptions {
+  start: string
+  end: string
+
+  filter?: CdrFilter
+}
+
+export interface UseInteruptOptions {
+  start: string
+  end: string
+
+  filter?: CdrFilter
+}
+
+export interface CdrFilter {
+  account_id?: string
+  account_name?: string
+
+  callere?: string
+  calleee?: string
+
+  callerip?: string
+  calleeip?: string
+
+  calling_gateway?: string
+  called_gateway?: string
+
+  incoming_caller?: string
+  incoming_callee?: string
+
+  outbound_caller?: string
+  outbound_callee?: string
+
+  holdtime?: string
+}
+
+export interface CdrFilterInterupt {
+  account_id?: string
+  account_name?: string
+
+  callere?: string
+  calleee?: string
+
+  callerip?: string
+  calleeip?: string
+
+  calling_gateway?: string
+  called_gateway?: string
+
+  incoming_caller?: string
+  incoming_callee?: string
+
+  outbound_caller?: string
+  outbound_callee?: string
+
+  holdtime?: string
 }

@@ -1,4 +1,5 @@
 import { AppSidebar } from '@/components/Sidebar'
+import { ThemeToggle } from '@/components/theme-toggle'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -27,32 +28,36 @@ export default function SidebarPage() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <SidebarInset>
+      <SidebarInset className="bg-white dark:bg-neutral-900">
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height]   ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-          <div className="flex items-center gap-2 px-4">
-            <SidebarTrigger className="-ml-1" />
-            <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
-            <Breadcrumb>
-              <BreadcrumbList>
-                {breadcrumbs.map((item, idx) => (
-                  <React.Fragment key={item.path}>
-                    <BreadcrumbItem>
-                      {idx < breadcrumbs.length - 1 ? (
-                        <BreadcrumbLink asChild>
-                          <Link to={item.path}>{item.label}</Link>
-                        </BreadcrumbLink>
-                      ) : (
-                        <BreadcrumbPage>{item.label}</BreadcrumbPage>
-                      )}
-                    </BreadcrumbItem>
+          <div className="flex w-full flex-row justify-between ">
+            <div className="flex items-center gap-2 px-4">
+              <SidebarTrigger className="-ml-1" />
+              <Separator orientation="vertical" className="mr-2 data-[orientation=vertical]:h-4" />
+              <Breadcrumb>
+                <BreadcrumbList>
+                  {breadcrumbs.map((item, idx) => (
+                    <React.Fragment key={item.path}>
+                      <BreadcrumbItem>
+                        {idx < breadcrumbs.length - 1 ? (
+                          <BreadcrumbLink asChild>
+                            <Link to={item.path}>{item.label}</Link>
+                          </BreadcrumbLink>
+                        ) : (
+                          <BreadcrumbPage>{item.label}</BreadcrumbPage>
+                        )}
+                      </BreadcrumbItem>
 
-                    {idx < breadcrumbs.length - 1 && <BreadcrumbSeparator />}
-                  </React.Fragment>
-                ))}
-              </BreadcrumbList>
-            </Breadcrumb>
+                      {idx < breadcrumbs.length - 1 && <BreadcrumbSeparator />}
+                    </React.Fragment>
+                  ))}
+                </BreadcrumbList>
+              </Breadcrumb>
+            </div>
+            <ThemeToggle />
           </div>
         </header>
+
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0  w-full min-w-0 max-w-7xl mx-auto">
           <Outlet />
         </div>

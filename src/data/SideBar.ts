@@ -27,6 +27,10 @@ export const SideBarData = {
           title: 'Call Records',
           url: '/records',
         },
+        {
+          title: 'Interupt Analysis',
+          url: '/interupt',
+        },
       ],
     },
   ],

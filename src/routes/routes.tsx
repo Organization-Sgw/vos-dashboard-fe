@@ -3,17 +3,22 @@ import LoginPages from '@/pages/LoginPages'
 import { createBrowserRouter, redirect } from 'react-router-dom'
 import RecordListPage from '@/pages/RecordsList'
 import DashboardPage from '@/pages/Dashboard'
-import RecordDetail from '@/pages/RecordDetail'
+import InteruptAnalysisPages from '@/pages/InteruptAnalysis'
+import ErrorBoundary from '@/components/ErrorBoundary'
 
 const router = createBrowserRouter([
   {
     path: '/login',
     element: <LoginPages />,
+    errorElement: <ErrorBoundary />,
+
     handle: { breadcrumb: 'Login' },
   },
   {
     path: '/',
     element: <SidebarPage />,
+    errorElement: <ErrorBoundary />,
+
     loader: () => ({ breadcrumb: 'CDR' }),
     children: [
       {
@@ -26,7 +31,6 @@ const router = createBrowserRouter([
         element: <DashboardPage />,
         loader: () => ({ breadcrumb: 'Dashboard' }),
       },
-
       {
         path: 'records',
         loader: () => ({ breadcrumb: 'Records' }),
@@ -35,12 +39,12 @@ const router = createBrowserRouter([
             index: true,
             element: <RecordListPage />,
           },
-          {
-            path: ':id',
-            element: <RecordDetail />,
-            loader: ({ params }) => ({ breadcrumb: params.id }),
-          },
         ],
+      },
+      {
+        path: 'interupt',
+        element: <InteruptAnalysisPages />,
+        loader: () => ({ breadcrumb: 'Interupt Analysis' }),
       },
     ],
   },

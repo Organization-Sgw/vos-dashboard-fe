@@ -1,9 +1,9 @@
-import { cdrFilterConfig } from '@/config/filterCdr'
+import { cdrFilterInteruptConfig } from '@/config/filterCdr'
 
-export default function FilterSection({ filter, setFilter }: any) {
+export default function FilterSectionInterupt({ filter, setFilter }: any) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
-      {cdrFilterConfig.map((item) => {
+      {cdrFilterInteruptConfig.map((item) => {
         const isHoldTime = item.field === 'holdtime'
 
         return (

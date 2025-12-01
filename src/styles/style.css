@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@import "tw-animate-css";
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -119,3 +119,7 @@
   }
 }
 
+html {
+  color-scheme: light dark;
+  transition: background-color 0.25s, color 0.25s;
+}
