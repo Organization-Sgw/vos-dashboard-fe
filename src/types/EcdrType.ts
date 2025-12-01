@@ -83,7 +83,23 @@ export interface CdrFilter {
 }
 
 export interface CdrFilterInterupt {
+  account_id?: string
+  account_name?: string
+
+  callere?: string
+  calleee?: string
+
   callerip?: string
+  calleeip?: string
+
   calling_gateway?: string
+  called_gateway?: string
+
+  incoming_caller?: string
+  incoming_callee?: string
+
+  outbound_caller?: string
+  outbound_callee?: string
+
   holdtime?: string
 }
