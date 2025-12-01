@@ -107,7 +107,7 @@ export default function InteruptAnalysisPages() {
 
       {/* RESULT SECTION */}
       <div className="mt-4">
-        {isLoading ? (
+        {isLoading || isFetching ? (
           <GatewaySkeleton />
         ) : rows.length === 0 ? (
           <NoDataFound />

@@ -60,9 +60,14 @@ export const cdrFilterConfig = [
     field: 'outbound_callee',
   },
   {
-    label: 'Holdtime',
-    placeholder: 'Holdtime',
-    field: 'holdtime',
+    label: 'Holdtime >=',
+    placeholder: 'Holdtime Start',
+    field: 'holdtime_start',
+  },
+  {
+    label: 'Holdtime <=',
+    placeholder: 'Holdtime End',
+    field: 'holdtime_end',
   },
 ]
 
@@ -128,8 +133,13 @@ export const cdrFilterInteruptConfig = [
     field: 'outbound_callee',
   },
   {
-    label: 'Holdtime',
-    placeholder: 'Holdtime',
-    field: 'holdtime',
+    label: 'Holdtime >=',
+    placeholder: 'Holdtime Start',
+    field: 'holdtime_start',
+  },
+  {
+    label: 'Holdtime <=',
+    placeholder: 'Holdtime End',
+    field: 'holdtime_end',
   },
 ]
