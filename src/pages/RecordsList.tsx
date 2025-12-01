@@ -11,7 +11,7 @@ import { defaultDate, formatForGoUTC } from '@/utils/Date'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { ChevronDown, Download } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { type DateRange } from 'react-day-picker'
 import toast from 'react-hot-toast'
 
@@ -33,12 +33,27 @@ export default function RecordListPage() {
   const limit = '30'
 
   // Fetch Data ECDR
-  const { data, isFetching, isLoading } = useQuery<ECdrResponse>({
+  const { data, isFetching, isLoading, isError, error } = useQuery<ECdrResponse>({
     queryKey: ['cdr', start, end, page, limit, appliedFilter],
     queryFn: () => fetchCDR(start, end, page, limit, appliedFilter),
     placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
+    retry: 1,
   })
+
+  // Toast jika data kosong
+  useEffect(() => {
+    if (!isLoading && data?.result?.data?.length === 0) {
+      toast.error('Data not found')
+    }
+  }, [isLoading, data])
+
+  // Toast jika terjadi error
+  useEffect(() => {
+    if (isError) {
+      toast.error(error?.message ?? 'Unexpected error occurred')
+    }
+  }, [isError])
 
   // Table
   const loadingTable = isLoading || isFetching

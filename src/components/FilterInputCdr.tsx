@@ -31,8 +31,9 @@ export default function FilterSection({ filter, setFilter }: any) {
                   let value: any = e.target.value
 
                   if (isHoldTime) {
-                    value = value.replace(/\D/g, '')
-                    value = value === '' ? '' : Number(value)
+                    let cleaned = e.target.value.replace(/\D/g, '')
+
+                    value = cleaned === '' ? null : Number(cleaned)
                   }
 
                   setFilter({
