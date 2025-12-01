@@ -30,12 +30,10 @@ export function useLogin() {
     mutationFn: loginRequest,
 
     onSuccess: (data) => {
-      toast.success(data.message)
       localStorage.setItem('token', data.token)
     },
 
     onError: (error: any) => {
-      toast.error(error.message)
       console.error('Login gagal:', error)
     },
   })
