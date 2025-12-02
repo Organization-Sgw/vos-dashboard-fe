@@ -14,15 +14,15 @@ export function transformTotalCalls(
   const { type } = getBucketInterval(startDate, endDate)
 
   const buckets: Record<string, Record<string, number>> = {}
-  const gatewaySet = new Set<string>() // 🔥 Track all valid gateways
+  const gatewaySet = new Set<string>() 
 
   data?.forEach((cdr) => {
     const gateway = cdr.CallingGateway?.trim() || ''
 
-    // 🚫 Skip invalid gateway
+
     if (!gateway || gateway === '' || gateway.toUpperCase() === 'UNKNOWN') return
 
-    gatewaySet.add(gateway) // 🟩 Add to list of global gateways
+    gatewaySet.add(gateway) 
 
     const begin = new Date(fixToWIB(cdr.BeginTime))
     let bucketKey = ''
@@ -42,7 +42,6 @@ export function transformTotalCalls(
 
   const allGateways = Array.from(gatewaySet)
 
-  // 🔥 Fill missing gateways with 0 for smooth Recharts lines
   return Object.entries(buckets).map(([time, values]) => {
     const row: MultiGatewayPoint = { time }
 

@@ -3,7 +3,7 @@ import { XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } f
 
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import type { ECdr } from '@/types/EcdrType'
-import { transformTotalCalls, type MultiGatewayPoint } from '@/utils/dataTotal'
+import { transformTotalCalls, type MultiGatewayPoint } from '@/utils/DataTotalChart'
 
 interface TotalCallsChartProps {
   startDate: string

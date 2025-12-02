@@ -49,7 +49,6 @@ export function transformAverageBuckets(
 
     allGateways.forEach((gw) => {
       if (!gateways[gw]) {
-        // 🟥 fill missing with zero to avoid broken line
         row[gw] = 0
       } else {
         const { total, count } = gateways[gw]
