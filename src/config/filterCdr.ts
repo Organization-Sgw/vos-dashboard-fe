@@ -143,3 +143,11 @@ export const cdrFilterInteruptConfig = [
     field: 'holdtime_end',
   },
 ]
+
+export const cdrFilterChartASRConfig = [
+  {
+    label: 'Calling Gateway',
+    placeholder: 'Calling Gateway',
+    field: 'calling_gateway',
+  },
+]

@@ -103,3 +103,7 @@ export interface CdrFilterInterupt {
 
   holdtime?: string
 }
+
+export interface CdrFilterAsr {
+  calling_gateway?: string
+}

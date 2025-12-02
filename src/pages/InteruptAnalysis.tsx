@@ -21,6 +21,7 @@ export default function InteruptAnalysisPages() {
   const [appliedDate, setAppliedDate] = useState<DateRange | undefined>(defaultDate)
   const [filter, setFilter] = useState<CdrFilterInterupt>({})
   const [appliedFilter, setAppliedFilter] = useState<CdrFilterInterupt>({})
+  
 
   const start = formatForGoUTC(appliedDate?.from)
   const end = formatForGoUTC(appliedDate?.to)
