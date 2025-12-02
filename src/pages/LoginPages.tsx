@@ -54,8 +54,8 @@ export default function LoginPage() {
     <div
       className="
         min-h-screen w-full flex items-center justify-center px-4
-        bg-gradient-to-br from-neutral-50 via-neutral-100 to-neutral-200
-        dark:bg-gradient-to-br dark:from-neutral-900 dark:via-neutral-900 dark:to-neutral-800
+        bg-linear-to-br from-neutral-50 via-neutral-100 to-neutral-200
+        dark:bg-linear-to-br dark:from-neutral-900 dark:via-neutral-900 dark:to-neutral-800
       "
     >
       {/* Dark Mode Toggle */}

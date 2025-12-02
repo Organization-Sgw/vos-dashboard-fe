@@ -1,4 +1,4 @@
-import type { DateRange } from "react-day-picker"
+import type { DateRange } from 'react-day-picker'
 
 function toRFC3339UTC7(date: Date) {
   const timezoneOffsetMinutes = 7 * 60
@@ -13,8 +13,14 @@ export function formatForGoUTC(date?: Date): string {
 
 const now = new Date()
 const oneHourBefore = new Date(now.getTime() - 60 * 60 * 1000)
+const defaultChartBefore = new Date(now.getTime() - 5 * 60 * 60 * 1000)
 
 export const defaultDate: DateRange = {
   from: oneHourBefore,
+  to: now,
+}
+
+export const defaultDateChart: DateRange = {
+  from: defaultChartBefore,
   to: now,
 }
