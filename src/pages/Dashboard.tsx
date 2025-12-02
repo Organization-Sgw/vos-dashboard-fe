@@ -11,6 +11,10 @@ import type { DateRange } from 'react-day-picker'
 import { Loader2 } from 'lucide-react'
 
 import toast from 'react-hot-toast'
+import { useTotalChart } from '@/hooks/useTotalCDR'
+import { TotalCallsChart } from '@/components/chart/ChartTotal'
+import { useAverageChart } from '@/hooks/useAverage'
+import { AverageChart } from '@/components/chart/ChartAverage'
 
 export default function DashboardPage() {
   const [date, setDate] = useState<DateRange | undefined>(defaultDateChart)
@@ -24,8 +28,17 @@ export default function DashboardPage() {
 
   // Fetch Chart Data
   const { data, isLoading, error } = useASRChart(startDate, endDate, appliedFilter)
+  const {
+    data: DataTotal,
+    isLoading: isLoadingTotal,
+    error: errorTotal,
+  } = useTotalChart(startDate, endDate, appliedFilter)
 
-  
+  const {
+    data: DataAverage,
+    isLoading: isLoadingAverage,
+    error: errorAverage,
+  } = useAverageChart(startDate, endDate, appliedFilter)
 
   const handleReset = () => {
     setDate(defaultDateChart)
@@ -90,17 +103,44 @@ export default function DashboardPage() {
         </div>
       </section>
 
-      {/* === CHART SECTION === */}
       <section className="w-full">
-        {isLoading && <ChartSkeleton />}
-
-        {error && <ChartError message={error.message} />}
-
-        {!isLoading && !error && (!data || data.length === 0) && <ChartEmpty />}
-
-        {!isLoading && !error && data && data.length > 0 && (
-          <ASRChart startDate={startDate} endDate={endDate} data={data} />
+        {(isLoading || isLoadingTotal || isLoadingAverage) && (
+          <div className="flex flex-col gap-5">
+            <ChartSkeleton />
+            <ChartSkeleton />
+            <ChartSkeleton />
+          </div>
         )}
+
+        {/* Error */}
+        {(error || errorTotal || errorAverage) && (
+          <ChartError message={(error?.message || errorTotal?.message) ?? 'Something went wrong'} />
+        )}
+
+        {/* Empty */}
+        {!isLoading &&
+          !isLoadingTotal &&
+          !isLoadingAverage &&
+          !error &&
+          !errorAverage &&
+          !errorTotal &&
+          (!data || data.length === 0) && <ChartEmpty />}
+
+        {/* Success: tampil 2 chart */}
+        {!isLoading &&
+          !isLoadingTotal &&
+          !isLoadingAverage &&
+          !error &&
+          !errorAverage &&
+          !errorTotal &&
+          data &&
+          data.length > 0 && (
+            <div className="flex flex-col gap-5">
+              <ASRChart startDate={startDate} endDate={endDate} data={data} />
+              <TotalCallsChart startDate={startDate} endDate={endDate} data={DataTotal} />
+              <AverageChart startDate={startDate} endDate={endDate} data={DataAverage} />
+            </div>
+          )}
       </section>
     </div>
   )
