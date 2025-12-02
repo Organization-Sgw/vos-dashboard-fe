@@ -1,6 +1,6 @@
 import { type ASRItem } from '@/hooks/useASR'
 import React from 'react'
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import { XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from 'recharts'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { transformChartDataDynamic } from '@/utils/Chart'
 
@@ -12,9 +12,7 @@ interface ASRChartProps {
 
 export const ASRChart: React.FC<ASRChartProps> = ({ startDate, endDate, data }) => {
   const filteredData = data?.filter((d) => d.calling_gateway && d.calling_gateway.trim() !== '')
-
   const chartData = transformChartDataDynamic(filteredData, startDate, endDate)
-
   const gateways = Array.from(new Set(filteredData.map((d) => d.calling_gateway)))
 
   return (
@@ -27,7 +25,7 @@ export const ASRChart: React.FC<ASRChartProps> = ({ startDate, endDate, data }) 
 
       <CardContent className="h-[350px]">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={chartData} margin={{ top: 15, right: 20, left: 0 }}>
+          <AreaChart data={chartData} margin={{ top: 15, right: 20, left: 0 }}>
             <XAxis dataKey="time" />
             <YAxis allowDecimals={false} />
             <Tooltip
@@ -40,7 +38,7 @@ export const ASRChart: React.FC<ASRChartProps> = ({ startDate, endDate, data }) 
             <Legend />
 
             {gateways.map((gateway, idx) => (
-              <Line
+              <Area
                 key={gateway}
                 type="monotone"
                 dataKey={gateway}
@@ -49,7 +47,7 @@ export const ASRChart: React.FC<ASRChartProps> = ({ startDate, endDate, data }) 
                 dot={false}
               />
             ))}
-          </LineChart>
+          </AreaChart>
         </ResponsiveContainer>
       </CardContent>
     </Card>
