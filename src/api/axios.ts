@@ -1,6 +1,6 @@
 import axios from 'axios'
 export const axiosInstance = axios.create({
-  //baseURL: 'http://localhost:4002/v1',
+  // baseURL: 'http://localhost:4002/v1',
   //baseURL: 'http://103.166.30.38:4002/v1',
   baseURL: 'https://vos-dashboard.redision.com/v1',
 })

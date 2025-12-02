@@ -1,25 +1,28 @@
-import { type ASRItem } from '@/hooks/useASR'
 import React from 'react'
 import { XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from 'recharts'
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
-import { transformChartDataDynamic } from '@/utils/DataASR'
 
-interface ASRChartProps {
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
+import type { ECdr } from '@/types/EcdrType'
+import { transformTotalCalls, type MultiGatewayPoint } from '@/utils/dataTotal'
+
+interface TotalCallsChartProps {
   startDate: string
   endDate: string
-  data: ASRItem[]
+  data?: ECdr[]
 }
 
-export const ASRChart: React.FC<ASRChartProps> = ({ startDate, endDate, data }) => {
-  const filteredData = data?.filter((d) => d.calling_gateway && d.calling_gateway.trim() !== '')
-  const chartData = transformChartDataDynamic(filteredData, startDate, endDate)
-  const gateways = Array.from(new Set(filteredData.map((d) => d.calling_gateway)))
+export const TotalCallsChart: React.FC<TotalCallsChartProps> = ({ startDate, endDate, data }) => {
+  const chartData: MultiGatewayPoint[] = transformTotalCalls(data ?? [], startDate, endDate)
+
+  const gateways = Array.from(
+    new Set(chartData.flatMap((point) => Object.keys(point).filter((k) => k !== 'time')))
+  )
 
   return (
     <Card className="w-full shadow-sm border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900">
       <CardHeader>
         <CardTitle className="text-lg font-semibold text-gray-800 dark:text-neutral-200">
-          ASR
+          Total Calls by Gateway
         </CardTitle>
       </CardHeader>
 
@@ -28,13 +31,7 @@ export const ASRChart: React.FC<ASRChartProps> = ({ startDate, endDate, data }) 
           <AreaChart data={chartData} margin={{ top: 15, right: 20, left: 0 }}>
             <XAxis dataKey="time" />
             <YAxis allowDecimals={false} />
-            <Tooltip
-              contentStyle={{
-                background: 'var(--tooltip-bg, #fff)',
-                borderRadius: '8px',
-                border: '1px solid #ddd',
-              }}
-            />
+            <Tooltip />
             <Legend />
 
             {gateways.map((gateway, idx) => (
@@ -43,6 +40,7 @@ export const ASRChart: React.FC<ASRChartProps> = ({ startDate, endDate, data }) 
                 type="monotone"
                 dataKey={gateway}
                 stroke={`hsl(${idx * 50}, 70%, 50%)`}
+                fill={`hsl(${idx * 50}, 70%, 50%, 0.15)`}
                 strokeWidth={2}
                 dot={false}
               />

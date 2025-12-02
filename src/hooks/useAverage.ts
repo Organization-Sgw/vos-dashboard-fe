@@ -16,17 +16,17 @@ export interface ChartResponse {
   data_asr: ASRItem[]
 }
 
-export function useASRChart(startDate: string, endDate: string, filter: CdrFilterAsr = {}) {
+export function useAverageChart(startDate: string, endDate: string, filter: CdrFilterAsr = {}) {
   const cleanedFilters = TrimObject(filter)
 
   return useQuery<ASRItem[]>({
-    queryKey: ['asr-chart', startDate, endDate, cleanedFilters],
+    queryKey: ['average-chart', startDate, endDate, cleanedFilters],
     queryFn: async () => {
       const res = await axiosInstance.get<{
         status: string
         message: string
         result: ChartResponse
-      }>('/cdr/chart/asr', {
+      }>('/cdr/chart/average', {
         params: {
           start: startDate,
           end: endDate,

@@ -15,7 +15,7 @@ export function getBucketInterval(startDate: string, endDate: string) {
 }
 
 function formatLocalDate(d: Date) {
-  return d.toLocaleDateString('en-CA')
+  return d.toLocaleDateString('en-CA') // YYYY-MM-DD
 }
 
 export function fixToWIB(dateStr: string) {
@@ -26,7 +26,13 @@ export function fixToWIB(dateStr: string) {
 export function transformChartDataDynamic(data: ASRItem[], startDate: string, endDate: string) {
   const { type, interval } = getBucketInterval(startDate, endDate)
 
-  const gateways = Array.from(new Set(data.map((d) => d.calling_gateway).filter(Boolean)))
+  const gateways = Array.from(
+    new Set(
+      data
+        .map((d) => d.calling_gateway?.trim())
+        .filter((gw) => gw && gw !== '' && gw.toUpperCase() !== 'UNKNOWN')
+    )
+  )
 
   const buckets: Record<string, Record<string, number>> = {}
 
@@ -47,16 +53,22 @@ export function transformChartDataDynamic(data: ASRItem[], startDate: string, en
     }
 
     buckets[key] = {}
-    gateways.forEach((gw) => (buckets[key][gw] = 0))
+
+    gateways.forEach((gw) => {
+      buckets[key][gw] = 0 
+    })
 
     if (type === 'hour') cursor.setHours(cursor.getHours() + interval)
     else cursor.setDate(cursor.getDate() + 1)
   }
 
-  // FILL DATA
   data.forEach((item) => {
+    const gw = item.calling_gateway?.trim()
+    if (!gw || gw === '' || gw.toUpperCase() === 'UNKNOWN') return
+
     const t = new Date(fixToWIB(item.begin_time))
     const d = formatLocalDate(t)
+
     let bucketKey = ''
 
     if (type === 'hour') {
@@ -66,8 +78,8 @@ export function transformChartDataDynamic(data: ASRItem[], startDate: string, en
       bucketKey = d
     }
 
-    if (buckets[bucketKey] && buckets[bucketKey][item.calling_gateway] != null) {
-      buckets[bucketKey][item.calling_gateway]++
+    if (buckets[bucketKey] && buckets[bucketKey][gw] != null) {
+      buckets[bucketKey][gw]++
     }
   })
 
