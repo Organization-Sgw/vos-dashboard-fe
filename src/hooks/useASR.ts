@@ -1,5 +1,5 @@
 import { axiosInstance } from '@/api/axios'
-import type { CdrFilter, CdrFilterAsr } from '@/types/EcdrType'
+import type { CdrFilterAsr } from '@/types/EcdrType'
 import { TrimObject } from '@/utils/request'
 import { useQuery } from '@tanstack/react-query'
 
@@ -36,7 +36,7 @@ export function useASRChart(startDate: string, endDate: string, filter: CdrFilte
 
       return res.data.result.data_asr
     },
-    
+
     refetchOnWindowFocus: false,
   })
 }
