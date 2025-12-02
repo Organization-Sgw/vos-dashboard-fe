@@ -1,4 +1,4 @@
-import type { ASRItem } from "@/hooks/useASR"
+import type { ASRItem } from '@/hooks/useASR'
 
 export function getBucketInterval(startDate: string, endDate: string) {
   const start = new Date(startDate)
@@ -8,10 +8,19 @@ export function getBucketInterval(startDate: string, endDate: string) {
   const diffHours = diffMs / 1000 / 60 / 60
   const diffDays = diffHours / 24
 
-  if (diffHours <= 24) return { type: 'hour', interval: 1 } // ≤ 24 jam → 1 jam
-  if (diffDays <= 3) return { type: 'hour', interval: 4 } // ≤ 3 hari → 4 jam
-  if (diffDays <= 5) return { type: 'hour', interval: 6 } // ≤ 5 hari → 6 jam
-  return { type: 'day', interval: 1 } // > 5 hari → per hari
+  if (diffHours <= 24) return { type: 'hour', interval: 1 }
+  if (diffDays <= 3) return { type: 'hour', interval: 4 }
+  if (diffDays <= 5) return { type: 'hour', interval: 6 }
+  return { type: 'day', interval: 1 }
+}
+
+function formatLocalDate(d: Date) {
+  return d.toLocaleDateString('en-CA')
+}
+
+export function fixToWIB(dateStr: string) {
+  if (!dateStr) return dateStr
+  return dateStr.replace(/Z$/, '+07:00')
 }
 
 export function transformChartDataDynamic(data: ASRItem[], startDate: string, endDate: string) {
@@ -26,41 +35,35 @@ export function transformChartDataDynamic(data: ASRItem[], startDate: string, en
 
   let cursor = new Date(start)
 
-  // CREATE BUCKET
   while (cursor <= end) {
+    const d = formatLocalDate(cursor)
     let key = ''
 
     if (type === 'hour') {
       const h = String(cursor.getHours()).padStart(2, '0')
-      const d = cursor.toISOString().slice(0, 10)
       key = `${d} ${h}:00`
     } else {
-      key = cursor.toISOString().slice(0, 10)
+      key = d
     }
 
     buckets[key] = {}
     gateways.forEach((gw) => (buckets[key][gw] = 0))
 
-    // increment
-    if (type === 'hour') {
-      cursor.setHours(cursor.getHours() + interval)
-    } else {
-      cursor.setDate(cursor.getDate() + 1)
-    }
+    if (type === 'hour') cursor.setHours(cursor.getHours() + interval)
+    else cursor.setDate(cursor.getDate() + 1)
   }
 
   // FILL DATA
   data.forEach((item) => {
-    const t = new Date(item.begin_time)
-
+    const t = new Date(fixToWIB(item.begin_time))
+    const d = formatLocalDate(t)
     let bucketKey = ''
 
     if (type === 'hour') {
       const rounded = Math.floor(t.getHours() / interval) * interval
-      const d = t.toISOString().slice(0, 10)
       bucketKey = `${d} ${String(rounded).padStart(2, '0')}:00`
     } else {
-      bucketKey = t.toISOString().slice(0, 10)
+      bucketKey = d
     }
 
     if (buckets[bucketKey] && buckets[bucketKey][item.calling_gateway] != null) {
@@ -68,8 +71,19 @@ export function transformChartDataDynamic(data: ASRItem[], startDate: string, en
     }
   })
 
-  return Object.entries(buckets).map(([time, values]) => ({
-    time,
-    ...values,
-  }))
+  const now = new Date()
+
+  return Object.entries(buckets)
+    .filter(([time]) => {
+      let parsed: Date
+
+      if (type === 'hour') {
+        parsed = new Date(time.replace(' ', 'T') + ':00+07:00')
+      } else {
+        parsed = new Date(time + 'T00:00:00+07:00')
+      }
+
+      return parsed <= now
+    })
+    .map(([time, values]) => ({ time, ...values }))
 }
