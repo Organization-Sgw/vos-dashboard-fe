@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { extractGateways, type ChartRow } from '@/hooks/useChart'
 
 interface TotalCallsChartProps {
-  data: ChartRow[] 
+  data: ChartRow[]
 }
 
 export const TotalCallsChart: React.FC<TotalCallsChartProps> = ({ data }) => {
@@ -19,11 +19,11 @@ export const TotalCallsChart: React.FC<TotalCallsChartProps> = ({ data }) => {
         </CardTitle>
       </CardHeader>
 
-      <CardContent className="h-[350px]">
+      <CardContent className="h-[380px]">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data} margin={{ top: 15, right: 20, left: 0 }}>
             <XAxis dataKey="time" />
-            <YAxis allowDecimals={false} />
+            <YAxis allowDecimals={false} fontFamily="Inter, sans-serif" />
             <Tooltip />
             <Legend />
 
