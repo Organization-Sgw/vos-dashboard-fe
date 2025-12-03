@@ -1,9 +1,8 @@
 import { ASRChart } from '@/components/chart/ChartASR'
 import { ChartEmpty, ChartError, ChartSkeleton } from '@/components/chart/ErrorComponent'
-import FilterSectionASR from '@/components/chart/FilterAsr'
 import { DateRangePicker } from '@/components/DatePicker'
 import { Button } from '@/components/ui/button'
-import { useASRChart } from '@/hooks/useASR'
+import { useChartData } from '@/hooks/useChart'
 import type { CdrFilterAsr } from '@/types/EcdrType'
 import { defaultDateChart, formatForGoUTC } from '@/utils/Date'
 import { useState } from 'react'
@@ -11,10 +10,8 @@ import type { DateRange } from 'react-day-picker'
 import { Loader2 } from 'lucide-react'
 
 import toast from 'react-hot-toast'
-import { useTotalChart } from '@/hooks/useTotalCDR'
-import { TotalCallsChart } from '@/components/chart/ChartTotal'
-import { useAverageChart } from '@/hooks/useAverage'
 import { AverageChart } from '@/components/chart/ChartAverage'
+import { TotalCallsChart } from '@/components/chart/ChartTotal'
 
 export default function DashboardPage() {
   const [date, setDate] = useState<DateRange | undefined>(defaultDateChart)
@@ -26,19 +23,11 @@ export default function DashboardPage() {
   const startDate = formatForGoUTC(appliedDate?.from)
   const endDate = formatForGoUTC(appliedDate?.to)
 
-  // Fetch Chart Data
-  const { data, isLoading, error } = useASRChart(startDate, endDate, appliedFilter)
-  const {
-    data: DataTotal,
-    isLoading: isLoadingTotal,
-    error: errorTotal,
-  } = useTotalChart(startDate, endDate, appliedFilter)
+  const { data, isLoading, error } = useChartData(startDate, endDate, appliedFilter)
 
-  const {
-    data: DataAverage,
-    isLoading: isLoadingAverage,
-    error: errorAverage,
-  } = useAverageChart(startDate, endDate, appliedFilter)
+  const asr = data?.data_asr ?? []
+  const total = data?.data_total_calls ?? []
+  const avg = data?.data_avg_time ?? []
 
   const handleReset = () => {
     setDate(defaultDateChart)
@@ -74,8 +63,8 @@ export default function DashboardPage() {
       {/* === FILTER SECTION === */}
       <section className="mb-6 rounded-xl border bg-white dark:bg-neutral-900 border-gray-200 dark:border-neutral-800 p-5">
         <h3 className="text-lg font-semibold mb-4">Filters</h3>
-
-        <FilterSectionASR filter={filterAsr} setFilter={setFilterAsr} />
+        {/* 
+        <FilterSectionASR filter={filterAsr} setFilter={setFilterAsr} /> */}
 
         <div className="mt-4 border-t border-gray-200 dark:border-neutral-800 pt-4">
           <h4 className="text-md font-semibold mb-3">Time Range</h4>
@@ -104,7 +93,8 @@ export default function DashboardPage() {
       </section>
 
       <section className="w-full">
-        {(isLoading || isLoadingTotal || isLoadingAverage) && (
+        {/* Loading */}
+        {isLoading && (
           <div className="flex flex-col gap-5">
             <ChartSkeleton />
             <ChartSkeleton />
@@ -113,34 +103,19 @@ export default function DashboardPage() {
         )}
 
         {/* Error */}
-        {(error || errorTotal || errorAverage) && (
-          <ChartError message={(error?.message || errorTotal?.message) ?? 'Something went wrong'} />
-        )}
+        {!isLoading && error && <ChartError message={error.message ?? 'Something went wrong'} />}
 
         {/* Empty */}
-        {!isLoading &&
-          !isLoadingTotal &&
-          !isLoadingAverage &&
-          !error &&
-          !errorAverage &&
-          !errorTotal &&
-          (!data || data.length === 0) && <ChartEmpty />}
+        {!isLoading && !error && asr.length === 0 && <ChartEmpty />}
 
-        {/* Success: tampil 2 chart */}
-        {!isLoading &&
-          !isLoadingTotal &&
-          !isLoadingAverage &&
-          !error &&
-          !errorAverage &&
-          !errorTotal &&
-          data &&
-          data.length > 0 && (
-            <div className="flex flex-col gap-5">
-              <ASRChart startDate={startDate} endDate={endDate} data={data} />
-              <TotalCallsChart startDate={startDate} endDate={endDate} data={DataTotal} />
-              <AverageChart startDate={startDate} endDate={endDate} data={DataAverage} />
-            </div>
-          )}
+        {/* Success */}
+        {!isLoading && !error && asr.length > 0 && (
+          <div className="flex flex-col gap-5">
+            <ASRChart data={asr} />
+            <AverageChart data={avg} />
+            <TotalCallsChart data={total} />
+          </div>
+        )}
       </section>
     </div>
   )
