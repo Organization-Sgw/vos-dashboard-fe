@@ -44,9 +44,6 @@ export default function DashboardPage() {
     try {
       setAppliedDate(date)
       setAppliedFilter(filterAsr)
-
-      await new Promise((res) => setTimeout(res, 300))
-
       toast.success('Filter applied', { id: toastId })
     } catch (err) {
       toast.error('Failed to apply filter', { id: toastId })
