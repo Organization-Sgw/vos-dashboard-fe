@@ -9,36 +9,46 @@ export default function GatewayTable({ data }: { data: RowData[] }) {
   return (
     <div
       className="
-      min-h-[500px] min-w-full overflow-auto 
-      rounded-xl border border-gray-200 dark:border-neutral-800
-      bg-white dark:bg-neutral-900 shadow-sm
-    "
+        min-w-full overflow-auto rounded-xl 
+        border border-gray-200 dark:border-neutral-800
+        bg-white dark:bg-neutral-900 shadow-sm
+      "
     >
-      <table className="min-w-max border-collapse w-full min-h-screen">
+      <table className="w-full min-w-max border-collapse">
         {/* === HEADER === */}
-        <thead className="sticky top-0 bg-gray-50 dark:bg-neutral-800 z-10 shadow-sm">
+        <thead className="sticky top-0 z-10 shadow-sm bg-gray-50 dark:bg-neutral-800">
           <tr className="border-b border-gray-200 dark:border-neutral-700">
-            <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-neutral-200 border-r border-gray-300 dark:border-neutral-700 w-[150px]">
-              Gateway ID
-            </th>
-            <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-neutral-200 border-r border-gray-300 dark:border-neutral-700 w-[180px]">
-              IP
-            </th>
-            <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-neutral-200 border-r border-gray-300 dark:border-neutral-700 w-[380px]">
-              Termination Reason
-            </th>
-            <th className="px-4 py-3 text-left text-sm font-semibold text-gray-700 dark:text-neutral-200 w-[120px]">
-              Total Call
-            </th>
+            {[
+              { label: 'Gateway ID', width: 'w-[150px]' },
+              { label: 'IP', width: 'w-[180px]' },
+              { label: 'Termination Reason', width: 'w-[380px]' },
+              { label: 'Total Call', width: 'w-[120px]' },
+            ].map((col) => (
+              <th
+                key={col.label}
+                className={`
+                  px-4 py-3 text-left text-sm font-semibold 
+                  text-gray-700 dark:text-neutral-200
+                  border-r border-gray-300 dark:border-neutral-700
+                  ${col.width}
+                `}
+              >
+                {col.label}
+              </th>
+            ))}
           </tr>
         </thead>
 
         {/* === BODY === */}
         <tbody className="text-sm text-gray-800 dark:text-neutral-200">
-          {data.map((row, i) => (
+          {data.map((row, index) => (
             <tr
-              key={i}
-              className="border-b border-gray-200 dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-800 transition"
+              key={index}
+              className="
+                border-b border-gray-200 dark:border-neutral-700 
+                hover:bg-gray-50 dark:hover:bg-neutral-800 
+                transition
+              "
             >
               {/* Gateway ID */}
               <td className="px-4 py-3 whitespace-nowrap border-r border-gray-200 dark:border-neutral-700">
@@ -50,15 +60,22 @@ export default function GatewayTable({ data }: { data: RowData[] }) {
                 {row.ip}
               </td>
 
-              {/* Termination Reason (multi-line) */}
-              <td className="px-4 py-3 whitespace-pre-wrap break-words border-r border-gray-200 dark:border-neutral-700 leading-relaxed">
-                {row.terminationReason.split(', ').map((reason) => (
-                  <div key={reason}>{reason}</div>
+              {/* Termination Reason */}
+              <td
+                className="
+    px-4 py-3 whitespace-pre-wrap wrap-break-word 
+    border-r border-gray-200 dark:border-neutral-700
+  "
+              >
+                {row.terminationReason.split(', ').map((text, rIdx) => (
+                  <div key={rIdx} className="text-right">
+                    {text}
+                  </div>
                 ))}
               </td>
 
               {/* Total Call */}
-              <td className="px-4 py-3 whitespace-nowrap font-semibold text-center">
+              <td className="px-4 py-3 font-semibold text-center whitespace-nowrap">
                 {row.totalCall}
               </td>
             </tr>
