@@ -102,6 +102,7 @@ export interface CdrFilterInterupt {
   outbound_callee?: string
 
   holdtime?: string
+  endreason?: number
 }
 
 export interface CdrFilterAsr {

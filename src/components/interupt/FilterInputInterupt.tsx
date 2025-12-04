@@ -1,18 +1,33 @@
 import { cdrFilterInteruptConfig } from '@/config/filterCdr'
+import EndReasonSelect from '../EndReason'
 
 export default function FilterSectionInterupt({ filter, setFilter }: any) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
       {cdrFilterInteruptConfig.map((item) => {
         const isHoldTime = item.field === 'holdtime'
+        const isEndReason = item.field === 'endreason'
 
         return (
           <div key={item.field}>
+            {/* Label */}
             <label className="block text-sm font-medium text-gray-700 dark:text-neutral-200 mb-1">
               {item.label}
             </label>
 
-            <div className="flex items-center gap-2">
+            {/** END REASON DROPDOWN */}
+            {isEndReason ? (
+              <EndReasonSelect
+                value={filter[item.field] ?? ''}
+                onChange={(val) =>
+                  setFilter({
+                    ...filter,
+                    [item.field]: val || undefined,
+                  })
+                }
+              />
+            ) : (
+              /** NORMAL INPUT */
               <input
                 type={isHoldTime ? 'number' : 'text'}
                 placeholder={item.placeholder}
@@ -31,8 +46,7 @@ export default function FilterSectionInterupt({ filter, setFilter }: any) {
                   let value: any = e.target.value
 
                   if (isHoldTime) {
-                    let cleaned = e.target.value.replace(/\D/g, '')
-
+                    const cleaned = value.replace(/\D/g, '')
                     value = cleaned === '' ? null : Number(cleaned)
                   }
 
@@ -42,7 +56,7 @@ export default function FilterSectionInterupt({ filter, setFilter }: any) {
                   })
                 }}
               />
-            </div>
+            )}
           </div>
         )
       })}

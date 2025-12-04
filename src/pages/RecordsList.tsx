@@ -232,7 +232,7 @@ export default function RecordListPage() {
       {/* TABLE */}
       <div className="min-h-[500px] min-w-full overflow-auto rounded-xl border border-gray-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm">
         <table className="min-w-max border-collapse">
-          <thead className="sticky top-0 bg-gray-50 dark:bg-neutral-800 z-10 shadow-sm">
+          <thead className="sticky top-0 bg-gray-50 dark:bg-neutral-800  z-5 shadow-sm">
             {table.getHeaderGroups().map((hg) => (
               <tr key={hg.id} className="border-b border-gray-200 dark:border-neutral-700">
                 {hg.headers.map((header, i) => (
@@ -316,8 +316,23 @@ export default function RecordListPage() {
       </div>
 
       {/* PAGINATION */}
+      {/* PAGINATION */}
       <div className="mt-6 flex flex-col items-center gap-4">
         <div className="flex items-center gap-2">
+          {/* BACK 10 */}
+          <button
+            onClick={() => {
+              const current = Number(page)
+              const newPage = Math.max(current - 10, 1)
+              setPage(String(newPage))
+            }}
+            disabled={Number(page) <= 10}
+            className="h-10 w-10 flex cursor-pointer items-center justify-center rounded-lg border bg-white dark:bg-neutral-800 dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-700 disabled:opacity-40 shadow-sm"
+          >
+            ◀◀
+          </button>
+
+          {/* BACK 1 */}
           <button
             onClick={() => {
               const current = Number(page)
@@ -329,10 +344,12 @@ export default function RecordListPage() {
             ◀
           </button>
 
+          {/* PAGE DISPLAY */}
           <div className="px-5 py-2 rounded-lg border bg-gray-50 dark:bg-neutral-800 border-gray-200 dark:border-neutral-700 text-gray-800 dark:text-neutral-200 font-medium shadow-sm">
             Page {page} of {data?.result.total_pages ?? 1}
           </div>
 
+          {/* NEXT 1 */}
           <button
             onClick={() => {
               const current = Number(page)
@@ -343,6 +360,20 @@ export default function RecordListPage() {
             className="h-10 w-10 cursor-pointer flex items-center justify-center rounded-lg border bg-white dark:bg-neutral-800 dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-700 disabled:opacity-40 shadow-sm"
           >
             ▶
+          </button>
+
+          {/* NEXT 10 */}
+          <button
+            onClick={() => {
+              const current = Number(page)
+              const total = data?.result.total_pages ?? current
+              const newPage = Math.min(current + 10, total)
+              setPage(String(newPage))
+            }}
+            disabled={Number(page) >= (data?.result.total_pages ?? 1) - 10}
+            className="h-10 w-10 cursor-pointer flex items-center justify-center rounded-lg border bg-white dark:bg-neutral-800 dark:border-neutral-700 hover:bg-gray-50 dark:hover:bg-neutral-700 disabled:opacity-40 shadow-sm"
+          >
+            ▶▶
           </button>
         </div>
       </div>

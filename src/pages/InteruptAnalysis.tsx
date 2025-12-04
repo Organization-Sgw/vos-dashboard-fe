@@ -95,6 +95,7 @@ export default function InteruptAnalysisPages() {
 
           <CollapsibleContent>
             <FilterSectionInterupt filter={filter} setFilter={setFilter} />
+            
 
             <div className="pb-4 border-b border-t pt-3">
               <h3 className="text-md font-semibold mb-3">Time Filters</h3>

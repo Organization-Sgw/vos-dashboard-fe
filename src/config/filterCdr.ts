@@ -69,6 +69,7 @@ export const cdrFilterConfig = [
     placeholder: 'Holdtime End',
     field: 'holdtime_end',
   },
+  { field: 'endreason', label: 'Termination Reason', placeholder: '' },
 ]
 
 export const cdrFilterInteruptConfig = [
@@ -142,6 +143,7 @@ export const cdrFilterInteruptConfig = [
     placeholder: 'Holdtime End',
     field: 'holdtime_end',
   },
+  { field: 'endreason', label: 'Termination Reason', placeholder: '' },
 ]
 
 export const cdrFilterChartASRConfig = [
