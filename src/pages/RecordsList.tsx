@@ -11,7 +11,7 @@ import { defaultDate, formatForGoUTC } from '@/utils/Date'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
 import { ChevronDown, Download } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { type DateRange } from 'react-day-picker'
 import toast from 'react-hot-toast'
 
@@ -23,6 +23,7 @@ export default function RecordListPage() {
   const [appliedDate, setAppliedDate] = useState<DateRange | undefined>(defaultDate)
   const [appliedFilter, setAppliedFilter] = useState<CdrFilter>({})
   const [filter, setFilter] = useState<CdrFilter>({})
+  const toastIdRef = useRef<string | undefined>(undefined)
 
   // Filter Date
   const start = formatForGoUTC(appliedDate?.from)
@@ -123,6 +124,26 @@ export default function RecordListPage() {
       toast.error('Failed to apply filter')
     }
   }
+
+  useEffect(() => {
+    if (isFetching) {
+      if (!toastIdRef.current) {
+        toastIdRef.current = toast.loading('Fetching data...')
+      }
+      return
+    }
+
+    if (toastIdRef.current) {
+      toast.dismiss(toastIdRef.current)
+      toastIdRef.current = undefined
+    }
+
+    if (isError) {
+      toast.error(error?.message ?? 'Failed to load data')
+    } else if (!isFetching && !isError) {
+      toast.success('Data loaded successfully')
+    }
+  }, [isFetching, isError])
 
   return (
     <div className="w-full max-w-full p-4">
