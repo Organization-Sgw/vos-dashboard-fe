@@ -42,7 +42,7 @@ export function DateRangePicker({ date, setDate }: PropsRangeDate) {
   }
 
   return (
-    <div className="grid gap-2 ">
+    <div className="grid gap-2 mb-4">
       <Popover>
         <PopoverTrigger asChild>
           <Button

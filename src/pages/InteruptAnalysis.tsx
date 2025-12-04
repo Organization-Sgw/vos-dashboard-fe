@@ -21,7 +21,6 @@ export default function InteruptAnalysisPages() {
   const [appliedDate, setAppliedDate] = useState<DateRange | undefined>(defaultDate)
   const [filter, setFilter] = useState<CdrFilterInterupt>({})
   const [appliedFilter, setAppliedFilter] = useState<CdrFilterInterupt>({})
-  
 
   const start = formatForGoUTC(appliedDate?.from)
   const end = formatForGoUTC(appliedDate?.to)
@@ -59,6 +58,23 @@ export default function InteruptAnalysisPages() {
   }
 
   const rows = mapInteruptToTableRows(data?.result ?? [])
+  useEffect(() => {
+    let toastId: string | undefined
+
+    if (isFetching) {
+      toastId = toast.loading('Fetching data...')
+    } else {
+      toast.dismiss(toastId)
+
+      if (error) {
+        toast.error(error?.message ?? 'Failed to load data')
+      } else {
+        toast.success('Data loaded successfully')
+      }
+    }
+
+    return () => toast.dismiss(toastId)
+  }, [isFetching, error])
 
   return (
     <div className="w-full min-h-screen p-4">
