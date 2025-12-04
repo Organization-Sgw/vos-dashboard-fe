@@ -16,7 +16,7 @@ export default function GatewayTable({ data }: { data: RowData[] }) {
     >
       <table className="w-full min-w-max border-collapse">
         {/* === HEADER === */}
-        <thead className="sticky top-0 z-10 shadow-sm bg-gray-50 dark:bg-neutral-800">
+        <thead className="sticky top-0 z-5 shadow-sm bg-gray-50 dark:bg-neutral-800">
           <tr className="border-b border-gray-200 dark:border-neutral-700">
             {[
               { label: 'Gateway ID', width: 'w-[150px]' },
