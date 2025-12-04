@@ -14,10 +14,16 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar'
 import { useAuth } from '@/context/useAuth'
+import toast from 'react-hot-toast'
 
 export function logout() {
+  toast.success('Logout Successful')
+
   localStorage.removeItem('token')
-  window.location.href = '/login'
+
+  setTimeout(() => {
+    window.location.href = '/login'
+  }, 500)
 }
 
 export function NavUser() {

@@ -30,17 +30,14 @@ export default function LoginPage() {
       { username, password },
       {
         onSuccess: () => {
-          toast.success('Login Successful 🎉')
-          window.location.href = '/'
-        },
-        onError: (err: any) => {
-          const msg =
-            err?.response?.data?.message ||
-            err?.message ||
-            'Login gagal, periksa username/password.'
+          toast.success('Login Successful')
 
-          setLocalError(msg)
-          toast.error(msg)
+          setTimeout(() => {
+            window.location.href = '/'
+          }, 500)
+        },
+        onError: () => {
+          toast.error('invalid username or password')
         },
       }
     )

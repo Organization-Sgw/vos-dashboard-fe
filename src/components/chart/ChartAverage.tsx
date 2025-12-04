@@ -5,7 +5,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '../ui/card'
 import { type ChartRow, extractGateways } from '@/hooks/useChart'
 
 interface AverageChartProps {
-  data: ChartRow[] 
+  data: ChartRow[]
 }
 
 export const AverageChart: React.FC<AverageChartProps> = ({ data }) => {
@@ -21,7 +21,11 @@ export const AverageChart: React.FC<AverageChartProps> = ({ data }) => {
 
       <CardContent className="h-[350px]">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={data} margin={{ top: 15, right: 20, left: 0 }}>
+          <AreaChart
+            className="dark:text-black"
+            data={data}
+            margin={{ top: 15, right: 20, left: 0 }}
+          >
             <XAxis dataKey="time" />
             <YAxis allowDecimals />
             <Tooltip />

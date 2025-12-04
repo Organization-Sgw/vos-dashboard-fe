@@ -5,25 +5,26 @@ import { Button } from '@/components/ui/button'
 import { useChartData } from '@/hooks/useChart'
 import type { CdrFilterAsr } from '@/types/EcdrType'
 import { defaultDateChart, formatForGoUTC } from '@/utils/Date'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { DateRange } from 'react-day-picker'
 import { Loader2 } from 'lucide-react'
 
 import toast from 'react-hot-toast'
 import { AverageChart } from '@/components/chart/ChartAverage'
 import { TotalCallsChart } from '@/components/chart/ChartTotal'
+import { Spinner } from '@/components/Spinner'
 
 export default function DashboardPage() {
   const [date, setDate] = useState<DateRange | undefined>(defaultDateChart)
   const [appliedDate, setAppliedDate] = useState<DateRange | undefined>(defaultDateChart)
   const [filterAsr, setFilterAsr] = useState<CdrFilterAsr>({})
   const [appliedFilter, setAppliedFilter] = useState<CdrFilterAsr>({})
-  const [isApplying, setIsApplying] = useState(false)
+  const [_, setIsApplying] = useState(false)
 
   const startDate = formatForGoUTC(appliedDate?.from)
   const endDate = formatForGoUTC(appliedDate?.to)
 
-  const { data, isLoading, error } = useChartData(startDate, endDate, appliedFilter)
+  const { data, isLoading, error, isFetching } = useChartData(startDate, endDate, appliedFilter)
 
   const asr = data?.data_asr ?? []
   const total = data?.data_total_calls ?? []
@@ -41,6 +42,8 @@ export default function DashboardPage() {
     const toastId = toast.loading('Applying filter...')
     setIsApplying(true)
 
+    await new Promise((resolve) => setTimeout(resolve, 50))
+
     try {
       setAppliedDate(date)
       setAppliedFilter(filterAsr)
@@ -51,6 +54,29 @@ export default function DashboardPage() {
       setIsApplying(false)
     }
   }
+
+  useEffect(() => {
+    let toastId: string | undefined
+
+    if (isLoading) {
+      toastId = toast.loading('Fetching chart data...')
+    }
+
+    if (!isLoading) {
+      toast.dismiss(toastId)
+
+      if (!error) {
+        toast.success('Data loaded successfully')
+      }
+      if (error) {
+        toast.error('failed to loaded data')
+      }
+    }
+
+    return () => {
+      toast.dismiss(toastId)
+    }
+  }, [isLoading])
 
   return (
     <div className="w-full min-h-screen p-4">
@@ -63,7 +89,7 @@ export default function DashboardPage() {
         {/* 
         <FilterSectionASR filter={filterAsr} setFilter={setFilterAsr} /> */}
 
-        <div className="mt-4 border-t border-gray-200 dark:border-neutral-800 pt-4">
+        <div className="mt-4 border-t border-gray-200 dark:border-neutral-800 pt-4 overflow-x-scroll">
           <h4 className="text-md font-semibold mb-3">Time Range</h4>
           <DateRangePicker date={date} setDate={setDate} />
         </div>
@@ -74,13 +100,12 @@ export default function DashboardPage() {
           </Button>
           <Button
             onClick={handleApplyFilter}
-            disabled={isApplying}
+            disabled={isFetching}
             className="flex items-center gap-2 cursor-pointer"
           >
-            {isApplying ? (
+            {isFetching ? (
               <>
-                <Loader2 className="h-4 w-4 animate-spin" />
-                Applying...
+                <Spinner size={18} border={3} color="border-white" />{' '}
               </>
             ) : (
               'Apply Filter'

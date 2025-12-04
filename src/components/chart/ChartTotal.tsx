@@ -21,7 +21,11 @@ export const TotalCallsChart: React.FC<TotalCallsChartProps> = ({ data }) => {
 
       <CardContent className="h-[380px]">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={data} margin={{ top: 15, right: 20, left: 0 }}>
+          <AreaChart
+            className="dark:text-black"
+            data={data}
+            margin={{ top: 15, right: 20, left: 0 }}
+          >
             <XAxis dataKey="time" />
             <YAxis allowDecimals={false} fontFamily="Inter, sans-serif" />
             <Tooltip />

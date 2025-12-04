@@ -20,7 +20,7 @@ export const ASRChart: React.FC<ASRChartProps> = ({ data }) => {
 
       <CardContent className="h-[350px]">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={data} margin={{ top: 15, right: 20, left: 0 }}>
+          <AreaChart className='dark:text-black' data={data} margin={{ top: 15, right: 20, left: 0 }}>
             <XAxis dataKey="time" />
             <YAxis />
             <Tooltip />
