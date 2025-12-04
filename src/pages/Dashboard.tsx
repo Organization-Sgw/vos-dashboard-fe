@@ -7,7 +7,6 @@ import type { CdrFilterAsr } from '@/types/EcdrType'
 import { defaultDateChart, formatForGoUTC } from '@/utils/Date'
 import { useEffect, useState } from 'react'
 import type { DateRange } from 'react-day-picker'
-import { Loader2 } from 'lucide-react'
 
 import toast from 'react-hot-toast'
 import { AverageChart } from '@/components/chart/ChartAverage'
