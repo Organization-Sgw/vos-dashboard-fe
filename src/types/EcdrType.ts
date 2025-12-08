@@ -105,6 +105,8 @@ export interface CdrFilterInterupt {
   endreason?: number
 }
 
-export interface CdrFilterAsr {
+export interface CdrFilterChart {
   calling_gateway?: string
+  callee_gateway?: string
+  gw?: 'calling' | 'callee'
 }

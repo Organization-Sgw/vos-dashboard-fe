@@ -1,5 +1,5 @@
 import { axiosInstance } from '@/api/axios'
-import type { CdrFilterAsr, ECdr } from '@/types/EcdrType'
+import type { CdrFilterChart, ECdr } from '@/types/EcdrType'
 import { TrimObject } from '@/utils/request'
 import { useQuery } from '@tanstack/react-query'
 
@@ -11,7 +11,7 @@ export interface ECdrTotalResponse {
   }
 }
 
-export function useTotalChart(startDate: string, endDate: string, filter: CdrFilterAsr = {}) {
+export function useTotalChart(startDate: string, endDate: string, filter: CdrFilterChart = {}) {
   const cleanedFilters = TrimObject(filter)
 
   return useQuery<ECdr[]>({
@@ -30,7 +30,7 @@ export function useTotalChart(startDate: string, endDate: string, filter: CdrFil
         },
       })
 
-      return res.data.result 
+      return res.data.result
     },
 
     refetchOnWindowFocus: false,

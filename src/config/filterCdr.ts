@@ -148,8 +148,29 @@ export const cdrFilterInteruptConfig = [
 
 export const cdrFilterChartASRConfig = [
   {
+    field: 'gw',
+    type: 'select',
+    label: 'Gateway Type',
+    options: ['calling', 'callee'],
+  },
+  {
     label: 'Calling Gateway',
     placeholder: 'Calling Gateway',
     field: 'calling_gateway',
+  },
+  {
+    label: 'Callee Gateway',
+    placeholder: 'Callee Gateway',
+    field: 'callee_gateway',
+  },
+  {
+    label: 'Holdtime >=',
+    placeholder: 'Holdtime Start',
+    field: 'holdtime_start',
+  },
+  {
+    label: 'Holdtime <=',
+    placeholder: 'Holdtime End',
+    field: 'holdtime_end',
   },
 ]
