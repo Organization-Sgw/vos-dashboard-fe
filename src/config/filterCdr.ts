@@ -74,24 +74,9 @@ export const cdrFilterConfig = [
 
 export const cdrFilterInteruptConfig = [
   {
-    label: 'Account ID',
-    placeholder: 'Account ID',
-    field: 'account_id',
-  },
-  {
-    label: 'Account Name',
-    placeholder: 'Account Name',
-    field: 'account_name',
-  },
-  {
     label: 'Caller',
     placeholder: 'Caller',
     field: 'callere',
-  },
-  {
-    label: 'Calling Gateway',
-    placeholder: 'Calling Gateway',
-    field: 'calling_gateway',
   },
   {
     label: 'Callee',
@@ -99,10 +84,28 @@ export const cdrFilterInteruptConfig = [
     field: 'calleee',
   },
   {
+    label: 'Calling Gateway',
+    placeholder: 'Calling Gateway',
+    field: 'calling_gateway',
+  },
+
+  {
     label: 'Called Gateway',
     placeholder: 'Called Gateway',
     field: 'callee_gateway',
   },
+  { field: 'endreason', label: 'Termination Reason', placeholder: '' },
+  {
+    label: 'Holdtime >=',
+    placeholder: 'Holdtime Start',
+    field: 'holdtime_start',
+  },
+  {
+    label: 'Holdtime <=',
+    placeholder: 'Holdtime End',
+    field: 'holdtime_end',
+  },
+
   {
     label: 'Caller IP',
     placeholder: 'Caller IP',
@@ -113,6 +116,7 @@ export const cdrFilterInteruptConfig = [
     placeholder: 'Callee IP',
     field: 'calleeip',
   },
+
   {
     label: 'Incoming Caller',
     placeholder: 'Incoming Caller',
@@ -134,16 +138,16 @@ export const cdrFilterInteruptConfig = [
     field: 'outbound_callee',
   },
   {
-    label: 'Holdtime >=',
-    placeholder: 'Holdtime Start',
-    field: 'holdtime_start',
+    label: 'Account ID',
+    placeholder: 'Account ID',
+    field: 'account_id',
   },
   {
-    label: 'Holdtime <=',
-    placeholder: 'Holdtime End',
-    field: 'holdtime_end',
+    label: 'Account Name',
+    placeholder: 'Account Name',
+    field: 'account_name',
   },
-  { field: 'endreason', label: 'Termination Reason', placeholder: '' },
+
   {
     field: 'gw',
     type: 'select',
