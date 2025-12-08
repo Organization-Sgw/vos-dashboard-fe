@@ -4,6 +4,12 @@ import type { ECdr } from '@/types/EcdrType'
 const columnHelper = createColumnHelper<ECdr>()
 
 export const cdrColumns = [
+  columnHelper.accessor('Caller', {
+    header: 'Caller',
+  }),
+  columnHelper.accessor('Callee', {
+    header: 'Callee',
+  }),
   columnHelper.accessor('BeginTime', {
     header: 'Start Time',
   }),
@@ -12,30 +18,20 @@ export const cdrColumns = [
     header: 'Stop Time',
   }),
 
-  columnHelper.accessor('AccountID', {
-    header: 'Account ID',
-  }),
-
-  columnHelper.accessor('AccountName', {
-    header: 'Account Name',
-  }),
-
-  columnHelper.accessor('Caller', {
-    header: 'Caller',
-  }),
-
   columnHelper.accessor('CallingGateway', {
     header: 'Calling Gateway',
-  }),
-
-  columnHelper.accessor('Callee', {
-    header: 'Callee',
   }),
 
   columnHelper.accessor('CalledGateway', {
     header: 'Called Gateway',
   }),
+  columnHelper.accessor('EndReasonText', {
+    header: 'Terminate Reason',
+  }),
 
+  columnHelper.accessor('ConversationTime', {
+    header: 'Conversation Time (sec)',
+  }),
   columnHelper.accessor('CallerIP', {
     header: 'Caller IP',
   }),
@@ -59,12 +55,11 @@ export const cdrColumns = [
   columnHelper.accessor('OutboundCallee', {
     header: 'Outbound Callee',
   }),
-
-  columnHelper.accessor('EndReasonText', {
-    header: 'Terminate Reason',
+  columnHelper.accessor('AccountID', {
+    header: 'Account ID',
   }),
 
-  columnHelper.accessor('ConversationTime', {
-    header: 'Conversation Time (sec)',
+  columnHelper.accessor('AccountName', {
+    header: 'Account Name',
   }),
 ]

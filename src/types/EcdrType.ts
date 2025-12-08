@@ -103,6 +103,8 @@ export interface CdrFilterInterupt {
 
   holdtime?: string
   endreason?: number
+
+  gw?: 'calling' | 'callee'
 }
 
 export interface CdrFilterChart {
