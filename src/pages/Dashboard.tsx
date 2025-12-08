@@ -3,7 +3,7 @@ import { ChartEmpty, ChartError, ChartSkeleton } from '@/components/chart/ErrorC
 import { DateRangePicker } from '@/components/DatePicker'
 import { Button } from '@/components/ui/button'
 import { useChartData } from '@/hooks/useChart'
-import type { CdrFilterAsr } from '@/types/EcdrType'
+import type { CdrFilterChart } from '@/types/EcdrType'
 import { defaultDateChart, formatForGoUTC } from '@/utils/Date'
 import { useEffect, useState } from 'react'
 import type { DateRange } from 'react-day-picker'
@@ -12,12 +12,14 @@ import toast from 'react-hot-toast'
 import { AverageChart } from '@/components/chart/ChartAverage'
 import { TotalCallsChart } from '@/components/chart/ChartTotal'
 import { Spinner } from '@/components/Spinner'
+import FilterSectionChart from '@/components/chart/FilterChart'
 
 export default function DashboardPage() {
   const [date, setDate] = useState<DateRange | undefined>(defaultDateChart)
   const [appliedDate, setAppliedDate] = useState<DateRange | undefined>(defaultDateChart)
-  const [filterAsr, setFilterAsr] = useState<CdrFilterAsr>({})
-  const [appliedFilter, setAppliedFilter] = useState<CdrFilterAsr>({})
+  const [filterChart, setFilterChart] = useState<CdrFilterChart>({ gw: 'calling' })
+  const [appliedFilter, setAppliedFilter] = useState<CdrFilterChart>({ gw: 'calling' })
+
   const [_, setIsApplying] = useState(false)
 
   const startDate = formatForGoUTC(appliedDate?.from)
@@ -32,8 +34,8 @@ export default function DashboardPage() {
   const handleReset = () => {
     setDate(defaultDateChart)
     setAppliedDate(defaultDateChart)
-    setFilterAsr({})
-    setAppliedFilter({})
+    setFilterChart({ gw: 'calling' })
+    setAppliedFilter({ gw: 'calling' })
     toast.success('Reset Filter')
   }
 
@@ -45,7 +47,7 @@ export default function DashboardPage() {
 
     try {
       setAppliedDate(date)
-      setAppliedFilter(filterAsr)
+      setAppliedFilter(filterChart)
       toast.success('Filter applied', { id: toastId })
     } catch (err) {
       toast.error('Failed to apply filter', { id: toastId })
@@ -85,8 +87,8 @@ export default function DashboardPage() {
       {/* === FILTER SECTION === */}
       <section className="mb-6 rounded-xl border bg-white dark:bg-neutral-900 border-gray-200 dark:border-neutral-800 p-5">
         <h3 className="text-lg font-semibold mb-4">Filters</h3>
-        {/* 
-        <FilterSectionASR filter={filterAsr} setFilter={setFilterAsr} /> */}
+
+        <FilterSectionChart filter={filterChart} setFilter={setFilterChart} />
 
         <div className="mt-4 border-t border-gray-200 dark:border-neutral-800 pt-4 overflow-x-scroll">
           <h4 className="text-md font-semibold mb-3">Time Range</h4>

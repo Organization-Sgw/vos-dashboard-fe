@@ -1,5 +1,5 @@
 export interface InteruptAnalysisResponse {
-  callee_gateway: string
+  gateway: string
   ip: string
   termination_reasons: {
     name: Record<string, number>

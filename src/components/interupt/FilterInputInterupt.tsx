@@ -2,11 +2,14 @@ import { cdrFilterInteruptConfig } from '@/config/filterCdr'
 import EndReasonSelect from '../EndReason'
 
 export default function FilterSectionInterupt({ filter, setFilter }: any) {
+  const gw = filter.gw ?? 'calling'
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
       {cdrFilterInteruptConfig.map((item) => {
         const isHoldTime = item.field === 'holdtime'
         const isEndReason = item.field === 'endreason'
+        const isGWSelect = item.field === 'gw'
 
         return (
           <div key={item.field}>
@@ -15,8 +18,27 @@ export default function FilterSectionInterupt({ filter, setFilter }: any) {
               {item.label}
             </label>
 
-            {/** END REASON DROPDOWN */}
-            {isEndReason ? (
+            {/* GW DROPDOWN */}
+            {isGWSelect ? (
+              <select
+                value={gw}
+                onChange={(e) => {
+                  const val = e.target.value as 'calling' | 'callee'
+                  setFilter({
+                    ...filter,
+                    gw: val,
+                  })
+                }}
+                className="w-full px-3 py-2 rounded-md border bg-gray-50 dark:bg-neutral-800"
+              >
+                {item.options?.map((opt: string) => (
+                  <option key={opt} value={opt}>
+                    {opt}
+                  </option>
+                ))}
+              </select>
+            ) : isEndReason ? (
+              // END REASON SELECT
               <EndReasonSelect
                 value={filter[item.field] ?? ''}
                 onChange={(val) =>
@@ -27,7 +49,7 @@ export default function FilterSectionInterupt({ filter, setFilter }: any) {
                 }
               />
             ) : (
-              /** NORMAL INPUT */
+              // NORMAL INPUT
               <input
                 type={isHoldTime ? 'number' : 'text'}
                 placeholder={item.placeholder}

@@ -4,11 +4,19 @@ import type { InteruptAnalysisApiResponse } from '@/types/InteruptType'
 import { TrimObject } from '@/utils/request'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 
+export const cleanPayload = (obj: any) => {
+  return Object.fromEntries(
+    Object.entries(obj).filter(([_, v]) => v !== '' && v !== null && v !== undefined)
+  )
+}
+
 export async function fetchInterupt(start: string, end: string, filter: CdrFilter = {}) {
   const cleanedFilters = TrimObject(filter)
 
+  const payload = cleanPayload(cleanedFilters)
+
   const res = await axiosInstance.get('/cdr/interupt', {
-    params: { start, end, ...cleanedFilters },
+    params: { start, end, ...payload },
     headers: {
       Accept: 'application/json',
     },

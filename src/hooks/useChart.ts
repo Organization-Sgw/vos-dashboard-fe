@@ -1,5 +1,5 @@
 import { axiosInstance } from '@/api/axios'
-import type { CdrFilterAsr } from '@/types/EcdrType'
+import type { CdrFilterChart } from '@/types/EcdrType'
 import { TrimObject } from '@/utils/request'
 import { useQuery } from '@tanstack/react-query'
 
@@ -14,7 +14,7 @@ export interface ChartResponse {
   data_avg_time: ChartRow[]
 }
 
-export function useChartData(startDate: string, endDate: string, filter: CdrFilterAsr = {}) {
+export function useChartData(startDate: string, endDate: string, filter: CdrFilterChart = {}) {
   const cleanedFilters = TrimObject(filter)
 
   return useQuery<ChartResponse>({
@@ -39,7 +39,6 @@ export function useChartData(startDate: string, endDate: string, filter: CdrFilt
     refetchOnWindowFocus: false,
   })
 }
-
 
 export function extractGateways(rows: ChartRow[]): string[] {
   if (!rows || rows.length === 0) return []

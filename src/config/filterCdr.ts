@@ -1,23 +1,8 @@
 export const cdrFilterConfig = [
   {
-    label: 'Account ID',
-    placeholder: 'Account ID',
-    field: 'account_id',
-  },
-  {
-    label: 'Account Name',
-    placeholder: 'Account Name',
-    field: 'account_name',
-  },
-  {
     label: 'Caller',
     placeholder: 'Caller',
     field: 'callere',
-  },
-  {
-    label: 'Calling Gateway',
-    placeholder: 'Calling Gateway',
-    field: 'calling_gateway',
   },
   {
     label: 'Callee',
@@ -25,9 +10,25 @@ export const cdrFilterConfig = [
     field: 'calleee',
   },
   {
+    label: 'Calling Gateway',
+    placeholder: 'Calling Gateway',
+    field: 'calling_gateway',
+  },
+  {
     label: 'Called Gateway',
     placeholder: 'Called Gateway',
-    field: 'called_gateway',
+    field: 'callee_gateway',
+  },
+  { field: 'endreason', label: 'Termination Reason', placeholder: '' },
+  {
+    label: 'Holdtime >=',
+    placeholder: 'Holdtime Start',
+    field: 'holdtime_start',
+  },
+  {
+    label: 'Holdtime <=',
+    placeholder: 'Holdtime End',
+    field: 'holdtime_end',
   },
   {
     label: 'Caller IP',
@@ -60,38 +61,22 @@ export const cdrFilterConfig = [
     field: 'outbound_callee',
   },
   {
-    label: 'Holdtime >=',
-    placeholder: 'Holdtime Start',
-    field: 'holdtime_start',
+    label: 'Account ID',
+    placeholder: 'Account ID',
+    field: 'account_id',
   },
   {
-    label: 'Holdtime <=',
-    placeholder: 'Holdtime End',
-    field: 'holdtime_end',
+    label: 'Account Name',
+    placeholder: 'Account Name',
+    field: 'account_name',
   },
-  { field: 'endreason', label: 'Termination Reason', placeholder: '' },
 ]
 
 export const cdrFilterInteruptConfig = [
   {
-    label: 'Account ID',
-    placeholder: 'Account ID',
-    field: 'account_id',
-  },
-  {
-    label: 'Account Name',
-    placeholder: 'Account Name',
-    field: 'account_name',
-  },
-  {
     label: 'Caller',
     placeholder: 'Caller',
     field: 'callere',
-  },
-  {
-    label: 'Calling Gateway',
-    placeholder: 'Calling Gateway',
-    field: 'calling_gateway',
   },
   {
     label: 'Callee',
@@ -99,10 +84,28 @@ export const cdrFilterInteruptConfig = [
     field: 'calleee',
   },
   {
+    label: 'Calling Gateway',
+    placeholder: 'Calling Gateway',
+    field: 'calling_gateway',
+  },
+
+  {
     label: 'Called Gateway',
     placeholder: 'Called Gateway',
-    field: 'called_gateway',
+    field: 'callee_gateway',
   },
+  { field: 'endreason', label: 'Termination Reason', placeholder: '' },
+  {
+    label: 'Holdtime >=',
+    placeholder: 'Holdtime Start',
+    field: 'holdtime_start',
+  },
+  {
+    label: 'Holdtime <=',
+    placeholder: 'Holdtime End',
+    field: 'holdtime_end',
+  },
+
   {
     label: 'Caller IP',
     placeholder: 'Caller IP',
@@ -113,6 +116,7 @@ export const cdrFilterInteruptConfig = [
     placeholder: 'Callee IP',
     field: 'calleeip',
   },
+
   {
     label: 'Incoming Caller',
     placeholder: 'Incoming Caller',
@@ -134,6 +138,42 @@ export const cdrFilterInteruptConfig = [
     field: 'outbound_callee',
   },
   {
+    label: 'Account ID',
+    placeholder: 'Account ID',
+    field: 'account_id',
+  },
+  {
+    label: 'Account Name',
+    placeholder: 'Account Name',
+    field: 'account_name',
+  },
+
+  {
+    field: 'gw',
+    type: 'select',
+    label: 'Gateway',
+    options: ['calling', 'callee'],
+  },
+]
+
+export const cdrFilterChartASRConfig = [
+  {
+    field: 'gw',
+    type: 'select',
+    label: 'Gateway',
+    options: ['calling', 'callee'],
+  },
+  {
+    label: 'Calling Gateway',
+    placeholder: 'Calling Gateway',
+    field: 'calling_gateway',
+  },
+  {
+    label: 'Callee Gateway',
+    placeholder: 'Callee Gateway',
+    field: 'callee_gateway',
+  },
+  {
     label: 'Holdtime >=',
     placeholder: 'Holdtime Start',
     field: 'holdtime_start',
@@ -142,14 +182,5 @@ export const cdrFilterInteruptConfig = [
     label: 'Holdtime <=',
     placeholder: 'Holdtime End',
     field: 'holdtime_end',
-  },
-  { field: 'endreason', label: 'Termination Reason', placeholder: '' },
-]
-
-export const cdrFilterChartASRConfig = [
-  {
-    label: 'Calling Gateway',
-    placeholder: 'Calling Gateway',
-    field: 'calling_gateway',
   },
 ]

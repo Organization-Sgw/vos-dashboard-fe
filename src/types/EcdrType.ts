@@ -103,8 +103,12 @@ export interface CdrFilterInterupt {
 
   holdtime?: string
   endreason?: number
+
+  gw?: 'calling' | 'callee'
 }
 
-export interface CdrFilterAsr {
+export interface CdrFilterChart {
   calling_gateway?: string
+  callee_gateway?: string
+  gw?: 'calling' | 'callee'
 }

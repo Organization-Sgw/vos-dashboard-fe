@@ -19,8 +19,8 @@ export default function InteruptAnalysisPages() {
   const [open, setOpen] = useState(false)
   const [date, setDate] = useState<DateRange | undefined>(defaultDate)
   const [appliedDate, setAppliedDate] = useState<DateRange | undefined>(defaultDate)
-  const [filter, setFilter] = useState<CdrFilterInterupt>({})
-  const [appliedFilter, setAppliedFilter] = useState<CdrFilterInterupt>({})
+  const [filter, setFilter] = useState<CdrFilterInterupt>({ gw: 'calling' })
+  const [appliedFilter, setAppliedFilter] = useState<CdrFilterInterupt>({ gw: 'calling' })
 
   const start = formatForGoUTC(appliedDate?.from)
   const end = formatForGoUTC(appliedDate?.to)
@@ -46,8 +46,8 @@ export default function InteruptAnalysisPages() {
   const handleReset = () => {
     setDate(defaultDate)
     setAppliedDate(defaultDate)
-    setFilter({})
-    setAppliedFilter({})
+    setFilter({ gw: 'calling' })
+    setAppliedFilter({ gw: 'calling' })
     toast.success('Reset Filter')
   }
 
@@ -95,7 +95,6 @@ export default function InteruptAnalysisPages() {
 
           <CollapsibleContent>
             <FilterSectionInterupt filter={filter} setFilter={setFilter} />
-            
 
             <div className="pb-4 border-b border-t pt-3">
               <h3 className="text-md font-semibold mb-3">Time Filters</h3>
